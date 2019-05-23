@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="Bartl.Pcf" constructor="AttachmentsGrid" version="0.0.1" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" control-type="standard">
+    <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
+    <data-set name="AttachmentsDataSet" display-name-key="Attachments">
+      <!-- 'property-set' node represents a unique, configurable property that each record in the dataset must provide. -->
+      <!-- UNCOMMENT TO ADD PROPERTY-SET NODE
+      <property-set name="samplePropertySet" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
+      -->
+    </data-set>
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/AttachmentsGrid.css" order="1" />
+      <!-- UNCOMMENT TO ADD MORE RESOURCES
+
+      <resx path="strings/AttachmentsGrid.1033.resx" version="1.0.0" />
+      -->
+    </resources>
+  </control>
+</manifest>

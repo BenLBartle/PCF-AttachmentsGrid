@@ -1,0 +1,33 @@
+.drop-zone {
+    border: 1px solid #ddd;
+    min-height: 150px;
+    text-align: center;
+    width: 100%;
+    -webkit-box-sizing: border-box; 
+    -moz-box-sizing: border-box;   
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    color: #000;
+    font-family: SegoeUI,"Segoe UI";
+    font-size: 1rem;
+    font-style: normal;
+    font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-weight: 600;
+    height: 2.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    outline: none;
+    padding: 0 .5rem;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  .drop-zone:hover {
+    background-color: #fff;
+    border-color: #666;
+    font-weight: 400;
+    }
