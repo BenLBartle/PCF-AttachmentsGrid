@@ -14,7 +14,7 @@
     "rxjs": "^6.5.2"
   },
   "devDependencies": {
-    "pcf-scripts": "~0",
-    "pcf-start": "~0"
+    "pcf-scripts": "^0",
+    "pcf-start": "^0"
   }
 }
