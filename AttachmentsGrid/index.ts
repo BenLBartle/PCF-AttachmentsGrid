@@ -53,8 +53,6 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		// Layout Elements
 		this._dropElement = document.createElement("div");
 		this._dropElement.classList.add("drop-zone");
-		//this._dropElement.addEventListener("dragover",this.HandleDragOver.bind(this));
-		//this._dropElement.addEventListener("drop",this.HandleDrop.bind(this));
 
 		this._dropHandler = new DropHandler(this._apiClient);
 		this._dropHandler.HandleDrop(this._dropElement);
@@ -69,16 +67,6 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	public RefreshData() {
 		this._notifyOutputChanged();
 	}
-
-	public HandleDrop(ev: DragEvent) {
-		ev.preventDefault();
-		//this._dropHandler.HandleDrop(ev);
-	}
-
-	public HandleDragOver(ev: DragEvent) {
-		ev.preventDefault();
-	}
-
 
 	/**
 	 * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
