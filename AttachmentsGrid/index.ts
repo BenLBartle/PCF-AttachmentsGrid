@@ -1,20 +1,36 @@
-import {IInputs, IOutputs} from "./generated/ManifestTypes";
+import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
-import { DropHandler } from "./drophandler/drophandler";
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
+import 'bootstrap';
+import { DropHandler } from "./drophandler/drophandler";
+
+class EntityReference {
+	id: string;
+	typeName: string;
+	constructor(typeName: string, id: string) {
+		this.id = id;
+		this.typeName = typeName;
+	}
+}
+
+class Attachment {
+	attachmentId: EntityReference;
+	name: string;
+	extension: string;
+	entityType: string;
+	constructor(attachmentId: EntityReference, name: string, extension: string) {
+		this.attachmentId = attachmentId;
+		this.name = name;
+		this.extension = extension;
+	}
+}
 
 export class AttachmentsGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 
-	private _apiClient: ComponentFramework.WebApi;
-
 	private _context: ComponentFramework.Context<IInputs>;
-
-	// PCF framework to notify of changes
-	private _notifyOutputChanged: () => void;
-
-	// Define Standard container element
 	private _container: HTMLDivElement;
+
 
 	// Define Input Elements
 	public _dropElement: HTMLDivElement;
@@ -23,12 +39,12 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	private _dropHandler: DropHandler;
 
+	private _apiClient: ComponentFramework.WebApi;
 
 	/**
 	 * Empty constructor.
 	 */
-	constructor()
-	{
+	constructor() {
 
 	}
 
@@ -40,15 +56,12 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	 * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
 	 * @param container If a control is marked control-type='starndard', it will receive an empty div element within which it can render its content.
 	 */
-	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement)
-	{
+	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 
 		// Add control initialization code
 		this._context = context;
-		this._container = document.createElement("div");
-		this._notifyOutputChanged = notifyOutputChanged;
+		this._container = container;
 		this._apiClient = context.webAPI;
-		this._refreshData = this.RefreshData.bind(this);
 
 		// Layout Elements
 		this._dropElement = document.createElement("div");
@@ -57,41 +70,100 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		this._dropHandler = new DropHandler(this._apiClient);
 		this._dropHandler.HandleDrop(this._dropElement);
 
-		this._container.append(this._dropElement);
-
-		// Bind to parent container
-		container.append(this._container);
-		
+		//get attachements from notes
+		let reference: EntityReference = new EntityReference(
+			(<any>context).page.entityTypeName,
+			(<any>context).page.entityId
+		)
+		if ((<any>context).page.entityId != null) {
+			this.getAttachments(reference).then(r => this.createBSCards(r));
+		}
 	}
 
-	public RefreshData() {
-		this._notifyOutputChanged();
+	private createBSCards(items: Attachment[]) {
+		//create the bootstrap cards
+		if (items.length > 0) {
+			//create containing card
+			let divControl: HTMLDivElement = document.createElement("div");
+			divControl.className = "card-columns";
+			this._container.appendChild(divControl);
+
+			for (let i = 0; i < items.length; i++) {
+				//create item card
+				let divCard: HTMLDivElement = document.createElement("div");
+				divCard.className = "card";
+				divControl.appendChild(divCard);
+
+				//get item image
+				let img: HTMLImageElement = <HTMLImageElement>document.createElement("img");
+				img.className = "card-img-top";
+				divCard.appendChild(img);
+				this.findImage(img, items[i]);
+
+				//set item name
+				let divCardBody: HTMLDivElement = document.createElement("div");
+				divCardBody.className = "card-text text-center";
+				divCard.appendChild(divCardBody);
+
+				divCardBody.innerHTML = items[i].name + "." + items[i].extension;
+			}
+		}
 	}
 
-	/**
-	 * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
-	 * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
-	 */
-	public updateView(context: ComponentFramework.Context<IInputs>): void
-	{
+	private findImage(img: HTMLImageElement, item: Attachment) {
+		//find the image
+		let res = this._context.resources.getResource(item.extension + ".png",
+			this.setImage.bind(this, img, "png"),
+			this.showError.bind(this)
+		);
+	}
+
+	private setImage(element: HTMLImageElement, fileType: string, fileContent: string): void {
+		//set the image to the img element
+		fileType = fileType.toLowerCase();
+		let imageUrl: string = "data:image/" + fileType + ";base64, " + fileContent;
+		element.src = imageUrl;
+	}
+
+	private showError(): void {
+		console.log('error while downloading .png');
+	}
+
+	private getAttachments(reference: EntityReference): Promise<Attachment[]> {
+		//webapi query to find any attachments
+		let query = "?$select=annotationid,filename,filesize,createdon,mimetype&$filter=filename ne null and _objectid_value eq " + reference.id + " and objecttypecode eq '" + reference.typeName + "' &$orderby=createdon desc";
+		return this._context.webAPI.retrieveMultipleRecords("annotation", query).then(
+			function success(result) {
+				let items: Attachment[] = [];
+				for (let i = 0; i < result.entities.length; i++) {
+					let ent = result.entities[i];
+					let item = new Attachment(
+						new EntityReference("annotation", ent["annotationid"].toString()),
+						ent["filename"].split('.')[0],
+						ent["filename"].split('.')[1].toLowerCase());
+					items.push(item);
+
+				}
+				return items;
+			}
+			, function (error) {
+				console.log(error.message);
+				let items: Attachment[] = [];
+				return items;
+			}
+		);
+
+	}
+
+	public updateView(context: ComponentFramework.Context<IInputs>): void {
 		// Add code to update control view
 	}
 
-	/** 
-	 * It is called by the framework prior to a control receiving new data. 
-	 * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
-	 */
-	public getOutputs(): IOutputs
-	{
+	public getOutputs(): IOutputs {
 		return {};
 	}
 
-	/** 
-	 * Called when the control is to be removed from the DOM tree. Controls should use this call for cleanup.
-	 * i.e. cancelling any pending remote calls, removing listeners, etc.
-	 */
-	public destroy(): void
-	{
+	public destroy(): void {
 		// Add code to cleanup control if necessary
 	}
 

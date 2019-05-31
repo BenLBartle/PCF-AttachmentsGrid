@@ -1,18 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
   <control namespace="Bartl.Pcf" constructor="AttachmentsGrid" version="0.0.1" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" control-type="standard">
-    <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
-    <data-set name="AttachmentsDataSet" display-name-key="Attachments">
-      <!-- 'property-set' node represents a unique, configurable property that each record in the dataset must provide. -->
-      <!-- UNCOMMENT TO ADD PROPERTY-SET NODE
-      <property-set name="samplePropertySet" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
-      -->
-    </data-set>
+    <property name="AttachmentsGrid" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
     <resources>
       <code path="index.ts" order="1"/>
       <css path="css/AttachmentsGrid.css" order="1" />
-      <!-- UNCOMMENT TO ADD MORE RESOURCES
+      <css path="../node_modules/bootstrap/dist/css/bootstrap.min.css" order="1" />
 
+      <img path='icons/3ds.png' />
+      <img path='icons/aac.png' />
+      <img path='icons/ai.png' />
+      <img path='icons/avi.png' />
+      <img path='icons/bmp.png' />
+      <img path='icons/cad.png' />
+      <img path='icons/cdr.png' />
+      <img path='icons/css.png' />
+      <img path='icons/dat.png' />
+      <img path='icons/dll.png' />
+      <img path='icons/dmg.png' />
+      <img path='icons/doc.png' />
+      <img path='icons/eps.png' />
+      <img path='icons/fla.png' />
+      <img path='icons/flv.png' />
+      <img path='icons/gif.png' />
+      <img path='icons/html.png' />
+      <img path='icons/indd.png' />
+      <img path='icons/iso.png' />
+      <img path='icons/jpg.png' />
+      <img path='icons/js.png' />
+      <img path='icons/pdf.png' />
+      <img path='icons/png.png' />
+      <img path='icons/ppt.png' />
+      <img path='icons/psd.png' />
+      <img path='icons/txt.png' />
+      <img path='icons/xls.png' />
+      <img path='icons/xml.png' />
+      <img path='icons/zip.png' />
+      <!-- UNCOMMENT TO ADD MORE RESOURCES
+      <css path="css/AttachmentsGrid.css" order="1" />
       <resx path="strings/AttachmentsGrid.1033.resx" version="1.0.0" />
       -->
     </resources>

@@ -1,0 +1,63 @@
+.control {
+    display: inline-table;
+    width: 100%;
+    vertical-align: center !important;
+}
+.group {
+    color: #045999;
+    font-weight: 300;
+    cursor: pointer;
+}
+.item {
+    width: 70px;
+    height: 90px;
+    display: inline-table;
+    cursor: pointer;
+    text-align: center;
+}
+    .item:hover {
+        border: solid;
+        border-color: #045999;
+    }
+table {
+    width: 100%;
+}
+td {
+    text-align: center;
+    color: #045999;
+    word-break: break-all;
+    padding: 2px 2px 2px 2px;
+    vertical-align: center !important; 
+    width: 20%;
+    border-bottom: thick double #32a1ce;
+}
+img {
+    max-width: 50px;
+    max-height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+td.image_style {
+    width:35px;
+}
+
+.card {
+    border: none;
+}
+
+.card-columns {
+    @include media-breakpoint-only(xs) {
+      column-count: 1;
+    }
+    @include media-breakpoint-only(sm) {
+      column-count: 2;
+    }
+    @include media-breakpoint-only(md) {
+        column-count: 3;
+    }
+    @include media-breakpoint-only(lg) {
+        column-count: 4;
+    }
+  }

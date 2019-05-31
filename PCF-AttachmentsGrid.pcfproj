@@ -3,8 +3,8 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
 
   <PropertyGroup>
-    <Name>AttachmentsGrid</Name>
-    <ProjectGuid>ab69eff3-1b9e-40e3-854e-cee67907403c</ProjectGuid>
+    <Name>PCF-AttachmentsGrid</Name>
+    <ProjectGuid>24c8d493-c9da-4692-921f-8dd9577e9e9c</ProjectGuid>
     <OutputPath>$(MSBuildThisFileDirectory)out\controls</OutputPath>
   </PropertyGroup>
 
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.PowerApps.MSBuild.Pcf" Version="0.*"/>
+    <PackageReference Include="Microsoft.PowerApps.MSBuild.Pcf" Version="0.1.*"/>
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<manifest>
+  <control namespace="BenAndJosh" constructor="AttachmentsGrid" version="0.0.1" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" control-type="standard">
+    <property name="AttachmentsGrid" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true"/>
+    <resources>
+      <code path="bundle.js" order="1"/>
+      <css path="AttachmentsGrid.css" order="1"/>
+      <css path="bootstrap.min.css" order="1"/>
+      <img path="3ds.png"/>
+      <img path="aac.png"/>
+      <img path="ai.png"/>
+      <img path="avi.png"/>
+      <img path="bmp.png"/>
+      <img path="cad.png"/>
+      <img path="cdr.png"/>
+      <img path="css.png"/>
+      <img path="dat.png"/>
+      <img path="dll.png"/>
+      <img path="dmg.png"/>
+      <img path="doc.png"/>
+      <img path="eps.png"/>
+      <img path="fla.png"/>
+      <img path="flv.png"/>
+      <img path="gif.png"/>
+      <img path="html.png"/>
+      <img path="indd.png"/>
+      <img path="iso.png"/>
+      <img path="jpg.png"/>
+      <img path="js.png"/>
+      <img path="pdf.png"/>
+      <img path="png.png"/>
+      <img path="ppt.png"/>
+      <img path="psd.png"/>
+      <img path="txt.png"/>
+      <img path="xls.png"/>
+      <img path="xml.png"/>
+      <img path="zip.png"/>
+    </resources>
+  </control>
+</manifest>
