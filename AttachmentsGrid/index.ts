@@ -1,45 +1,29 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
-import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
-type DataSet = ComponentFramework.PropertyTypes.DataSet;
 import 'bootstrap';
 import { DropHandler } from "./drophandler/drophandler";
-
-class EntityReference {
-	id: string;
-	typeName: string;
-	constructor(typeName: string, id: string) {
-		this.id = id;
-		this.typeName = typeName;
-	}
-}
-
-class Attachment {
-	attachmentId: EntityReference;
-	name: string;
-	extension: string;
-	entityType: string;
-	constructor(attachmentId: EntityReference, name: string, extension: string) {
-		this.attachmentId = attachmentId;
-		this.name = name;
-		this.extension = extension;
-	}
-}
+import { Attachment } from "./Attachment";
+import { EntityReference } from "./EntityReference";
 
 export class AttachmentsGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
-
 
 	private _context: ComponentFramework.Context<IInputs>;
 	private _container: HTMLDivElement;
 
-
 	// Define Input Elements
 	public _dropElement: HTMLDivElement;
 
+	public _progressElement: HTMLDivElement;
+	public _progressBar: HTMLDivElement;
+
 	private _refreshData: EventListenerOrEventListenerObject;
+
+	private _overlay: HTMLDivElement;
 
 	private _dropHandler: DropHandler;
 
 	private _apiClient: ComponentFramework.WebApi;
+
+	private _attachments: Attachment[];
 
 	/**
 	 * Empty constructor.
@@ -56,19 +40,35 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	 * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
 	 * @param container If a control is marked control-type='starndard', it will receive an empty div element within which it can render its content.
 	 */
-	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
+	public async init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 
 		// Add control initialization code
 		this._context = context;
-		this._container = container;
+		this._container = document.createElement("div");
 		this._apiClient = context.webAPI;
+
+		// Progress Bar Elements
+		this._progressElement = document.createElement("div");
+		this._progressElement.classList.add("progress");
+		this._progressElement.style.height = "5px";
+		this._progressElement.style.visibility = "hidden";
+
+		this._progressBar = document.createElement("div");
+		this._progressBar.classList.add("progress-bar");
+		this._progressBar.style.width = "0%";
 
 		// Layout Elements
 		this._dropElement = document.createElement("div");
 		this._dropElement.classList.add("drop-zone");
 
-		this._dropHandler = new DropHandler(this._apiClient);
-		this._dropHandler.HandleDrop(this._dropElement);
+		this._dropElement.append(this._overlay);
+
+		this._progressElement.append(this._progressBar);
+
+		this._container.append(this._progressElement, this._dropElement);
+
+		// Bind to parent container
+		container.append(this._container);
 
 		//get attachements from notes
 		let reference: EntityReference = new EntityReference(
@@ -76,19 +76,27 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			(<any>context).page.entityId
 		)
 		if ((<any>context).page.entityId != null) {
-			this.getAttachments(reference).then(r => this.createBSCards(r));
+			this._attachments = await this.getAttachments(reference)
+			this.createBSCards();
 		}
+
+		// TODO: Remove this:
+		// this._attachments = await this.getAttachments(new EntityReference('jojhn', '1'));
+		// this.createBSCards(this._attachments);
+
+		this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachments);
+		this._dropHandler.HandleDrop(this._dropElement, (<any>context).page.entityId, (<any>context).page.entityTypeName);
 	}
 
-	private createBSCards(items: Attachment[]) {
+	private createBSCards() {
 		//create the bootstrap cards
-		if (items.length > 0) {
+		if (this._attachments.length > 0) {
 			//create containing card
 			let divControl: HTMLDivElement = document.createElement("div");
 			divControl.className = "card-columns";
-			this._container.appendChild(divControl);
+			this._dropElement.appendChild(divControl);
 
-			for (let i = 0; i < items.length; i++) {
+			this._attachments.forEach(item => {
 				//create item card
 				let divCard: HTMLDivElement = document.createElement("div");
 				divCard.className = "card";
@@ -98,30 +106,34 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 				let img: HTMLImageElement = <HTMLImageElement>document.createElement("img");
 				img.className = "card-img-top";
 				divCard.appendChild(img);
-				this.findImage(img, items[i]);
+				this.findImage(img, item);
 
 				//set item name
 				let divCardBody: HTMLDivElement = document.createElement("div");
 				divCardBody.className = "card-text text-center";
 				divCard.appendChild(divCardBody);
 
-				divCardBody.innerHTML = items[i].name + "." + items[i].extension;
-			}
+				divCardBody.innerHTML = `${item.name}.${item.extension}`;
+
+			});
 		}
 	}
 
 	private findImage(img: HTMLImageElement, item: Attachment) {
 		//find the image
-		let res = this._context.resources.getResource(item.extension + ".png",
-			this.setImage.bind(this, img, "png"),
-			this.showError.bind(this)
-		);
+		this._context.resources.getResource(`${item.extension}.png`,
+			content => {
+				this.setImage(img, "png", content);
+			},
+			() => {
+				this.showError();
+			});
 	}
 
 	private setImage(element: HTMLImageElement, fileType: string, fileContent: string): void {
 		//set the image to the img element
 		fileType = fileType.toLowerCase();
-		let imageUrl: string = "data:image/" + fileType + ";base64, " + fileContent;
+		let imageUrl: string = `data:image/${fileType};base64, ${fileContent}`;
 		element.src = imageUrl;
 	}
 
@@ -129,29 +141,26 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		console.log('error while downloading .png');
 	}
 
-	private getAttachments(reference: EntityReference): Promise<Attachment[]> {
+	private async getAttachments(reference: EntityReference): Promise<Attachment[]> {
 		//webapi query to find any attachments
-		let query = "?$select=annotationid,filename,filesize,createdon,mimetype&$filter=filename ne null and _objectid_value eq " + reference.id + " and objecttypecode eq '" + reference.typeName + "' &$orderby=createdon desc";
-		return this._context.webAPI.retrieveMultipleRecords("annotation", query).then(
-			function success(result) {
-				let items: Attachment[] = [];
-				for (let i = 0; i < result.entities.length; i++) {
-					let ent = result.entities[i];
-					let item = new Attachment(
-						new EntityReference("annotation", ent["annotationid"].toString()),
-						ent["filename"].split('.')[0],
-						ent["filename"].split('.')[1].toLowerCase());
-					items.push(item);
+		let query = `?$select=annotationid,filename,filesize,createdon,mimetype&$filter=filename ne null and _objectid_value eq ${reference.id} and objecttypecode eq '${reference.typeName}' &$orderby=createdon desc`;
+		try {
+			const result = await this._context.webAPI.retrieveMultipleRecords("annotation", query);
+			let items: Attachment[] = [];
+			for (let i = 0; i < result.entities.length; i++) {
+				let ent = result.entities[i];
+				let item = new Attachment(new EntityReference("annotation", ent["annotationid"].toString()), ent["filename"].split('.')[0], ent["filename"].split('.')[1].toLowerCase());
+				items.push(item);
+			}
+			return items;
+		}
+		catch (error) {
+			console.log(error.message);
+			let items_1: Attachment[] = [];
+			return items_1;
+		}
 
-				}
-				return items;
-			}
-			, function (error) {
-				console.log(error.message);
-				let items: Attachment[] = [];
-				return items;
-			}
-		);
+		//return [new Attachment(new EntityReference('annotation', '1'), 'Document', 'png'), new Attachment(new EntityReference('annotation', '2'), 'Document2', 'png')]
 
 	}
 

@@ -2,13 +2,13 @@
 <ImportExportXml version="9.1.0.643" SolutionPackageVersion="9.1" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <!-- Unique Name of Cds Solution-->
-    <UniqueName>Solution</UniqueName>
+    <UniqueName>Attachments</UniqueName>
     <LocalizedNames>
       <!-- Localized Solution Name in language code -->
-      <LocalizedName description="Solution" languagecode="1033" />
+      <LocalizedName description="Attachments" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0</Version>
+    <Version>1.3</Version>
     <!-- Solution Package Type: Managed(1)/Unmanaged(1)/Both (2)-->
     <Managed>2</Managed>
     <Publisher>
