@@ -1,36 +1,3 @@
-.control {
-    display: inline-table;
-    width: 100%;
-    vertical-align: center !important;
-}
-.group {
-    color: #045999;
-    font-weight: 300;
-    cursor: pointer;
-}
-.item {
-    width: 70px;
-    height: 90px;
-    display: inline-table;
-    cursor: pointer;
-    text-align: center;
-}
-    .item:hover {
-        border: solid;
-        border-color: #045999;
-    }
-table {
-    width: 100%;
-}
-td {
-    text-align: center;
-    color: #045999;
-    word-break: break-all;
-    padding: 2px 2px 2px 2px;
-    vertical-align: center !important; 
-    width: 20%;
-    border-bottom: thick double #32a1ce;
-}
 img {
     max-width: 50px;
     max-height: auto;
@@ -44,7 +11,7 @@ td.image_style {
 }
 
 .card {
-    border: none;
+    border: none !important;
 }
 
 .card-columns {

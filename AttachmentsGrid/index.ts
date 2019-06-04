@@ -25,12 +25,27 @@ class Attachment {
 	}
 }
 
+class AttachmentRef {
+	id: string;
+	type: string;
+	constructor(id: string, type: string) {
+		this.id = id;
+		this.type = type;
+	}
+}
+
+class FileToDownload implements ComponentFramework.FileObject {
+	fileContent: string;
+	fileName: string;
+	fileSize: number;
+	mimeType: string;
+}
+
 export class AttachmentsGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 
 	private _context: ComponentFramework.Context<IInputs>;
 	private _container: HTMLDivElement;
-
 
 	// Define Input Elements
 	public _dropElement: HTMLDivElement;
@@ -106,6 +121,13 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 				divCard.appendChild(divCardBody);
 
 				divCardBody.innerHTML = items[i].name + "." + items[i].extension;
+				let attachmentRef = new AttachmentRef(
+					items[i].attachmentId.id.toString(),
+					items[i].attachmentId.typeName);
+
+				//add a view file listener
+				divCard.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
+
 			}
 		}
 	}
@@ -155,8 +177,38 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	}
 
+	private getAttachment(id: string, type: string): Promise<FileToDownload> {
+		//query the attachement id
+		return this._context.webAPI.retrieveRecord("annotation", id).then(
+			function success(result) {
+				let file: FileToDownload = new FileToDownload();
+				file.fileContent =
+					type == "annotation" ? result["documentbody"] : result["body"];
+				file.fileName = result["filename"];
+				file.fileSize = result["filesize"];
+				file.mimeType = result["mimetype"];
+				return file;
+
+			}
+
+		);
+	}
+
+	private onClickAttachment(attachment: AttachmentRef): void {
+		//get the attachment id
+		let id = attachment.id;
+		let type = attachment.type;
+
+		this.getAttachment(id, type).then((r: any) => {
+			this._context.navigation.openFile(r);
+		}
+		);
+
+	}
+
+
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
-		// Add code to update control view
+
 	}
 
 	public getOutputs(): IOutputs {
@@ -165,6 +217,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	public destroy(): void {
 		// Add code to cleanup control if necessary
+
 	}
 
 }

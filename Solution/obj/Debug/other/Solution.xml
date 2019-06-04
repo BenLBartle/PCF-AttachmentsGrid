@@ -89,7 +89,7 @@
       </Addresses>
     </Publisher>
     <RootComponents>
-      <RootComponent type="66" schemaName="BenAndJosh.AttachmentsGrid" behavior="0" />
+      <RootComponent type="66" schemaName="Bartl.Pcf.AttachmentsGrid" behavior="0" />
     </RootComponents>
     <MissingDependencies />
   </SolutionManifest>
