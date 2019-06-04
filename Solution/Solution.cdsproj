@@ -32,7 +32,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\pcf-attachmentsgrid\PCF-AttachmentsGrid.pcfproj">
+    <ProjectReference Include="..\PCF-AttachmentsGrid.pcfproj">
       <Project>24c8d493-c9da-4692-921f-8dd9577e9e9c</Project>
       <Name>PCF-AttachmentsGrid</Name>
       <Targets>Build</Targets>
