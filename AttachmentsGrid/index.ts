@@ -31,10 +31,6 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	public _progressElement: HTMLDivElement;
 	public _progressBar: HTMLDivElement;
 
-	private _refreshData: EventListenerOrEventListenerObject;
-
-	private _overlay: HTMLDivElement;
-
 	private _dropHandler: DropHandler;
 
 	private _apiClient: ComponentFramework.WebApi;
@@ -76,8 +72,6 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		// Layout Elements
 		this._dropElement = document.createElement("div");
 		this._dropElement.classList.add("drop-zone");
-
-		this._dropElement.append(this._overlay);
 
 		this._progressElement.append(this._progressBar);
 
