@@ -14,26 +14,11 @@ td.image_style {
     border: none !important;
 }
 
-.card-columns {
-    @include media-breakpoint-only(xs) {
-      column-count: 1;
-    }
-    @include media-breakpoint-only(sm) {
-      column-count: 2;
-    }
-    @include media-breakpoint-only(md) {
-        column-count: 3;
-    }
-    @include media-breakpoint-only(lg) {
-        column-count: 4;
-    }
-  }
-
 .drop-zone {
     border: 1px solid #ddd;
     min-height: 150px;
     text-align: center;
-    width: 100%;
+    
     -webkit-box-sizing: border-box; 
     -moz-box-sizing: border-box;   
     box-sizing: border-box;
@@ -48,13 +33,13 @@ td.image_style {
     font-variant-ligatures: normal;
     font-variant-numeric: normal;
     font-weight: 600;
-    height: 2.5rem;
+    
     margin-left: 0;
     margin-right: 0;
     outline: none;
     padding: 0 .5rem;
     text-overflow: ellipsis;
-    width: 100%;
+    
   }
 
 .drop-zone-hover {

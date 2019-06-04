@@ -790,3 +790,21 @@ Packing c:\PCF-AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
 2019-06-04 07:54:00.769 - Info	
 Unmanaged Pack complete.
 
+2019-06-04 10:45:46.736 - Info	
+Packing c:\PCF-AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-04 10:45:46.755 - Info	Processing Component: Entities
+2019-06-04 10:45:46.760 - Info	Processing Component: Roles
+2019-06-04 10:45:46.765 - Info	Processing Component: Workflows
+2019-06-04 10:45:46.766 - Info	Processing Component: FieldSecurityProfiles
+2019-06-04 10:45:46.766 - Info	Processing Component: Templates
+2019-06-04 10:45:46.768 - Info	Processing Component: EntityMaps
+2019-06-04 10:45:46.768 - Info	Processing Component: EntityRelationships
+2019-06-04 10:45:46.780 - Info	Processing Component: OrganizationSettings
+2019-06-04 10:45:46.781 - Info	Processing Component: optionsets
+2019-06-04 10:45:46.782 - Info	Processing Component: CustomControls
+2019-06-04 10:45:46.796 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-04 10:45:46.816 - Info	Processing Component: EntityDataProviders
+2019-06-04 10:45:46.927 - Info	
+Unmanaged Pack complete.
+
