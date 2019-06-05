@@ -9,38 +9,43 @@ export class DropHandler {
     }
 
     public HandleDrop(target: HTMLElement, entityId: string, entityLogicalName: string) {
-        fromEvent(target, 'drop')
-            .subscribe(async (ev: any) => {
-                ev.preventDefault();
-                if (ev.dataTransfer.items) {
-                    ev.target.classList.remove('drop-zone-hover');
-                    this.progressElement.style.visibility = "visible";
-                    await this.HandleFiles(ev.dataTransfer.files, entityId, entityLogicalName);
-                    
-                    // This is to show the progress bar going to 100% before hiding, for better UX.
-                    await this.sleep(750);
-                    this.progressElement.style.visibility = "hidden";
-                    this.progressBar.style.width = "0%";
-                }
-            });
+        if (entityId) {
+            fromEvent(target, 'drop')
+                .subscribe(async (ev: any) => {
+                    ev.preventDefault();
+                    await this.handleEvent(ev, entityId, entityLogicalName);
+                });
 
-        fromEvent(target, 'dragover')
-            .subscribe(ev => ev.preventDefault());
+            fromEvent(target, 'dragover')
+                .subscribe(ev => ev.preventDefault());
 
-        fromEvent(target, 'dragenter')
-            .subscribe((ev: any) => {
-                var element = <HTMLElement>ev.target;
-                element.classList.add('drop-zone-hover');
-            });
+            fromEvent(target, 'dragenter')
+                .subscribe((ev: any) => {
+                    var element = <HTMLElement>ev.target;
+                    element.classList.add('drop-zone-hover');
+                });
 
-        fromEvent(target, 'dragleave')
-            .subscribe((ev: any) => {
-                var element = <HTMLElement>ev.target;
-                element.classList.remove('drop-zone-hover');
-            });
+            fromEvent(target, 'dragleave')
+                .subscribe((ev: any) => {
+                    var element = <HTMLElement>ev.target;
+                    element.classList.remove('drop-zone-hover');
+                });
+        }
     }
 
-    private async HandleFiles(list: FileList, entityId: string, entityLogicalName: string) {
+    private async handleEvent(ev: any, entityId: string, entityLogicalName: string) {
+        if (ev.dataTransfer.items) {
+            ev.target.classList.remove('drop-zone-hover');
+            this.progressElement.style.visibility = "visible";
+            await this.handleFiles(ev.dataTransfer.files, entityId, entityLogicalName);
+            // This is to show the progress bar going to 100% before hiding, for better UX.
+            await this.sleep(750);
+            this.progressElement.style.visibility = "hidden";
+            this.progressBar.style.width = "0%";
+        }
+    }
+
+    private async handleFiles(list: FileList, entityId: string, entityLogicalName: string) {
 
         for (var i = 0; i < list.length; i++) {
 
