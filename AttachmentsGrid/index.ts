@@ -120,7 +120,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 				//set item name
 				let divCardBody: HTMLDivElement = document.createElement("div");
-				divCardBody.className = "card-text text-center";
+				divCardBody.className = "card-text text-center text-truncate";
 				divCard.appendChild(divCardBody);
 
 				divCardBody.innerHTML = `${item.name}.${item.extension}`;

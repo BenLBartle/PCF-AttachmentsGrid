@@ -11,8 +11,13 @@ td.image_style {
 }
 
 .card {
-    border: none !important;
+    border: 1px solid #ffffff !important;
+    padding: 5%;
 }
+
+.card:hover {
+  border: 1px solid #acabab !important;
+  }
 
 .drop-zone {
     border: 1px solid #ddd;

@@ -808,3 +808,111 @@ Packing c:\PCF-AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
 2019-06-04 10:45:46.927 - Info	
 Unmanaged Pack complete.
 
+2019-06-05 08:51:54.618 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-05 08:51:54.635 - Info	Processing Component: Entities
+2019-06-05 08:51:54.639 - Info	Processing Component: Roles
+2019-06-05 08:51:54.641 - Info	Processing Component: Workflows
+2019-06-05 08:51:54.642 - Info	Processing Component: FieldSecurityProfiles
+2019-06-05 08:51:54.642 - Info	Processing Component: Templates
+2019-06-05 08:51:54.643 - Info	Processing Component: EntityMaps
+2019-06-05 08:51:54.644 - Info	Processing Component: EntityRelationships
+2019-06-05 08:51:54.653 - Info	Processing Component: OrganizationSettings
+2019-06-05 08:51:54.654 - Info	Processing Component: optionsets
+2019-06-05 08:51:54.654 - Info	Processing Component: CustomControls
+2019-06-05 08:51:54.661 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-05 08:51:54.676 - Info	Processing Component: EntityDataProviders
+2019-06-05 08:51:54.775 - Info	
+Unmanaged Pack complete.
+
+2019-06-05 08:54:01.723 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-05 08:54:01.750 - Info	Processing Component: Entities
+2019-06-05 08:54:01.752 - Info	Processing Component: Roles
+2019-06-05 08:54:01.755 - Info	Processing Component: Workflows
+2019-06-05 08:54:01.755 - Info	Processing Component: FieldSecurityProfiles
+2019-06-05 08:54:01.756 - Info	Processing Component: Templates
+2019-06-05 08:54:01.757 - Info	Processing Component: EntityMaps
+2019-06-05 08:54:01.757 - Info	Processing Component: EntityRelationships
+2019-06-05 08:54:01.766 - Info	Processing Component: OrganizationSettings
+2019-06-05 08:54:01.766 - Info	Processing Component: optionsets
+2019-06-05 08:54:01.767 - Info	Processing Component: CustomControls
+2019-06-05 08:54:01.774 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-05 08:54:01.790 - Info	Processing Component: EntityDataProviders
+2019-06-05 08:54:01.885 - Info	
+Unmanaged Pack complete.
+
+2019-06-05 09:03:30.224 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-05 09:03:30.302 - Info	Processing Component: Entities
+2019-06-05 09:03:30.305 - Info	Processing Component: Roles
+2019-06-05 09:03:30.308 - Info	Processing Component: Workflows
+2019-06-05 09:03:30.308 - Info	Processing Component: FieldSecurityProfiles
+2019-06-05 09:03:30.308 - Info	Processing Component: Templates
+2019-06-05 09:03:30.309 - Info	Processing Component: EntityMaps
+2019-06-05 09:03:30.310 - Info	Processing Component: EntityRelationships
+2019-06-05 09:03:30.353 - Info	Processing Component: OrganizationSettings
+2019-06-05 09:03:30.355 - Info	Processing Component: optionsets
+2019-06-05 09:03:30.356 - Info	Processing Component: CustomControls
+2019-06-05 09:03:30.366 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-05 09:03:30.396 - Info	Processing Component: EntityDataProviders
+2019-06-05 09:03:30.627 - Info	
+Unmanaged Pack complete.
+
+2019-06-05 09:06:04.890 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-05 09:06:04.905 - Info	Processing Component: Entities
+2019-06-05 09:06:04.908 - Info	Processing Component: Roles
+2019-06-05 09:06:04.912 - Info	Processing Component: Workflows
+2019-06-05 09:06:04.913 - Info	Processing Component: FieldSecurityProfiles
+2019-06-05 09:06:04.913 - Info	Processing Component: Templates
+2019-06-05 09:06:04.914 - Info	Processing Component: EntityMaps
+2019-06-05 09:06:04.914 - Info	Processing Component: EntityRelationships
+2019-06-05 09:06:04.920 - Info	Processing Component: OrganizationSettings
+2019-06-05 09:06:04.921 - Info	Processing Component: optionsets
+2019-06-05 09:06:04.921 - Info	Processing Component: CustomControls
+2019-06-05 09:06:04.930 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-05 09:06:04.945 - Info	Processing Component: EntityDataProviders
+2019-06-05 09:06:05.045 - Info	
+Unmanaged Pack complete.
+
+2019-06-05 09:15:40.876 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-05 09:15:40.892 - Info	Processing Component: Entities
+2019-06-05 09:15:40.892 - Info	Processing Component: Roles
+2019-06-05 09:15:40.892 - Info	Processing Component: Workflows
+2019-06-05 09:15:40.892 - Info	Processing Component: FieldSecurityProfiles
+2019-06-05 09:15:40.908 - Info	Processing Component: Templates
+2019-06-05 09:15:40.908 - Info	Processing Component: EntityMaps
+2019-06-05 09:15:40.908 - Info	Processing Component: EntityRelationships
+2019-06-05 09:15:40.908 - Info	Processing Component: OrganizationSettings
+2019-06-05 09:15:40.908 - Info	Processing Component: optionsets
+2019-06-05 09:15:40.908 - Info	Processing Component: CustomControls
+2019-06-05 09:15:40.908 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-05 09:15:40.923 - Info	Processing Component: EntityDataProviders
+2019-06-05 09:15:41.017 - Info	
+Unmanaged Pack complete.
+
+2019-06-05 09:23:24.210 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-05 09:23:24.257 - Info	Processing Component: Entities
+2019-06-05 09:23:24.257 - Info	Processing Component: Roles
+2019-06-05 09:23:24.257 - Info	Processing Component: Workflows
+2019-06-05 09:23:24.257 - Info	Processing Component: FieldSecurityProfiles
+2019-06-05 09:23:24.257 - Info	Processing Component: Templates
+2019-06-05 09:23:24.257 - Info	Processing Component: EntityMaps
+2019-06-05 09:23:24.257 - Info	Processing Component: EntityRelationships
+2019-06-05 09:23:24.273 - Info	Processing Component: OrganizationSettings
+2019-06-05 09:23:24.273 - Info	Processing Component: optionsets
+2019-06-05 09:23:24.273 - Info	Processing Component: CustomControls
+2019-06-05 09:23:24.273 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-05 09:23:24.288 - Info	Processing Component: EntityDataProviders
+2019-06-05 09:23:24.373 - Info	
+Unmanaged Pack complete.
+

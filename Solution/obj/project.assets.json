@@ -91,11 +91,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\PCF-AttachmentsGrid\\Solution\\Solution.cdsproj",
+      "projectUniqueName": "c:\\PCF_AttachmentsGrid\\Solution\\Solution.cdsproj",
       "projectName": "Solution",
-      "projectPath": "c:\\PCF-AttachmentsGrid\\Solution\\Solution.cdsproj",
+      "projectPath": "c:\\PCF_AttachmentsGrid\\Solution\\Solution.cdsproj",
       "packagesPath": "C:\\Users\\uktpjhether\\.nuget\\packages\\",
-      "outputPath": "c:\\PCF-AttachmentsGrid\\Solution\\obj\\",
+      "outputPath": "c:\\PCF_AttachmentsGrid\\Solution\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [

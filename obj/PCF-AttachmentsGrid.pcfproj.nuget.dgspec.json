@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\PCF-AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj": {}
+    "c:\\PCF_AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj": {}
   },
   "projects": {
-    "c:\\PCF-AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj": {
+    "c:\\PCF_AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\PCF-AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj",
+        "projectUniqueName": "c:\\PCF_AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj",
         "projectName": "PCF-AttachmentsGrid",
-        "projectPath": "c:\\PCF-AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj",
+        "projectPath": "c:\\PCF_AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj",
         "packagesPath": "C:\\Users\\uktpjhether\\.nuget\\packages\\",
-        "outputPath": "c:\\PCF-AttachmentsGrid\\obj\\",
+        "outputPath": "c:\\PCF_AttachmentsGrid\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [
