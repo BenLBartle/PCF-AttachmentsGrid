@@ -1,12 +1,10 @@
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { Attachment } from '../Attachment';
 import { EntityReference } from '../EntityReference';
 
 export class DropHandler {
 
-    private _entity: ComponentFramework.WebApi.Entity;
-
-    constructor(private webApi: ComponentFramework.WebApi, private progressElement: HTMLDivElement, private progressBar: HTMLDivElement, private attachments: Attachment[]) {
+    constructor(private webApi: ComponentFramework.WebApi, private progressElement: HTMLDivElement, private progressBar: HTMLDivElement, private attachmentSource: Subject<Attachment>) {
 
     }
 
@@ -62,7 +60,7 @@ export class DropHandler {
 
             var response = await this.webApi.createRecord('annotation', attachment);
 
-            this.attachments.push(new Attachment(new EntityReference('annotation', response.id), file.name, this.GetFileExtension(file.name)));
+            this.attachmentSource.next(new Attachment(new EntityReference('annotation', response.id), this.TrimFileExtension(file.name), this.GetFileExtension(file.name)));
 
             console.log(`Attachment: ${file.name} processed, percentage complete: ${this.GetProgressPercentage(i + 1, list.length)}`);
 
@@ -90,6 +88,10 @@ export class DropHandler {
 
     private GetFileExtension(fileName: string): string {
         return <string>fileName.split('.').pop();
+    }
+
+    private TrimFileExtension(fileName: string): string {
+        return <string>fileName.split('.')[0];
     }
 
     private GetProgressPercentage(complete: number, todo: number) {

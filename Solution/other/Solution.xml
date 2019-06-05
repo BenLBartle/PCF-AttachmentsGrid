@@ -8,7 +8,7 @@
       <LocalizedName description="Attachments" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.3</Version>
+    <Version>1.4</Version>
     <!-- Solution Package Type: Managed(1)/Unmanaged(1)/Both (2)-->
     <Managed>2</Managed>
     <Publisher>
