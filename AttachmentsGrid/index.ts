@@ -3,6 +3,7 @@ import 'bootstrap';
 import { DropHandler } from "./drophandler/drophandler";
 import { Attachment } from "./Attachment";
 import { EntityReference } from "./EntityReference";
+import { Subject } from "rxjs";
 
 class AttachmentRef {
 	id: string;
@@ -36,7 +37,11 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	private _apiClient: ComponentFramework.WebApi;
 
-	private _attachments: Attachment[];
+	private _attachmentSource = new Subject<Attachment>();
+
+	private _attachmentContainer: HTMLDivElement;
+
+	attachmentAdded$ = this._attachmentSource.asObservable();
 
 	/**
 	 * Empty constructor.
@@ -74,6 +79,11 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		this._dropElement = document.createElement("div");
 		this._dropElement.classList.add("drop-zone");
 
+		// Attachment Elements
+		this._attachmentContainer = document.createElement("div");
+		this._attachmentContainer.className = "card-columns";
+		this._dropElement.appendChild(this._attachmentContainer);
+
 		this._progressElement.append(this._progressBar);
 
 		this._container.append(this._progressElement, this._dropElement);
@@ -86,65 +96,57 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			(<any>context).page.entityTypeName,
 			(<any>context).page.entityId
 		)
+
+		this.attachmentAdded$.subscribe(a => {
+			this.createBSCard(a);
+		})
+
 		if ((<any>context).page.entityId != null) {
-			this._attachments = await this.getAttachments(reference)
-			this.createBSCards();
+			await this.getAttachments(reference)
 		}
 
-		// TODO: Remove this:
-		// this._attachments = await this.getAttachments(new EntityReference('jojhn', '1'));
-		// this.createBSCards(this._attachments);
-
-		this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachments);
+		this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachmentSource);
 		this._dropHandler.HandleDrop(this._dropElement, (<any>context).page.entityId, (<any>context).page.entityTypeName);
 	}
 
-	private createBSCards() {
-		//create the bootstrap cards
-		if (this._attachments.length > 0) {
-			//create containing card
-			this._divControl = document.createElement("div");
-			this._divControl.className = "card-columns";
-			this._dropElement.appendChild(this._divControl);
+	private createBSCard(attachment: Attachment) {
 
-			this._attachments.forEach(item => {
-				//create item card
-				let divCard: HTMLDivElement = document.createElement("div");
-				divCard.id = `${item.name}_divcard`;
-				divCard.className = "card";
-				
-				//create delete element
-				let deleteButton: HTMLButtonElement = document.createElement("button");
-				deleteButton.type = "button";
-				deleteButton.className = "close deleteButton";
-				deleteButton.id = `${item.name}_deleteButton`;
-				deleteButton.innerHTML = "<span>&times;</span>";
-				this._divControl.appendChild(divCard);
-				divCard.appendChild(deleteButton);
+		let divCard: HTMLDivElement = document.createElement("div");
+		divCard.className = "card";
+		divCard.id = `${attachment.name}_divcard`;
+		this._attachmentContainer.appendChild(divCard);
 
-				//get item image
-				let img: HTMLImageElement = <HTMLImageElement>document.createElement("img");
-				img.className = "card-img-top";
-				divCard.appendChild(img);
-				this.findImage(img, item);
+		//create delete element
+		let deleteButton: HTMLButtonElement = document.createElement("button");
+		deleteButton.type = "button";
+		deleteButton.className = "close deleteButton";
+		deleteButton.id = `${attachment.name}_deleteButton`;
+		deleteButton.innerHTML = "<span>&times;</span>";
+		this._divControl.appendChild(divCard);
+		divCard.appendChild(deleteButton);
 
-				//set item name
-				let divCardBody: HTMLDivElement = document.createElement("div");
-				divCardBody.className = "card-text text-center text-truncate";
-				divCard.appendChild(divCardBody);
+		//get item image
+		let img: HTMLImageElement = <HTMLImageElement>document.createElement("img");
+		img.className = "card-img-top";
+		divCard.appendChild(img);
+		this.findImage(img, attachment);
 
-				divCardBody.innerHTML = `${item.name}.${item.extension}`;
-				let attachmentRef = new AttachmentRef(
-					item.attachmentId.id.toString(),
-					item.attachmentId.typeName);
+		//set item name
+		let divCardBody: HTMLDivElement = document.createElement("div");
+		divCardBody.className = "card-text text-center";
+		divCard.appendChild(divCardBody);
 
-				//add event listeners 
-				divCardBody.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
-				img.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
-				deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef));
-			})
+		divCardBody.innerHTML = `${attachment.name}.${attachment.extension}`;
+		let attachmentRef = new AttachmentRef(
+			attachment.attachmentId.id.toString(),
+			attachment.attachmentId.typeName);
+
+		//add event listeners 
+		divCardBody.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
+		img.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
+		deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef));
 	}
-}
+
 	private onClickDelete(divCard: HTMLDivElement, attachment: AttachmentRef){
 		//show confirm or cancel action
 		let confirmDelete: HTMLDivElement = document.createElement("div");
@@ -187,7 +189,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	private findImage(img: HTMLImageElement, item: Attachment) {
 		//find the image
-		this._context.resources.getResource(`${item.extension}.png`,
+		this._context.resources.getResource(`${item.extension.toLowerCase()}.png`,
 			content => {
 				this.setImage(img, "png", content);
 			},
@@ -216,7 +218,8 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			for (let i = 0; i < result.entities.length; i++) {
 				let ent = result.entities[i];
 				let item = new Attachment(new EntityReference("annotation", ent["annotationid"].toString()), ent["filename"].split('.')[0], ent["filename"].split('.')[1].toLowerCase());
-				items.push(item);
+
+				this._attachmentSource.next(item);
 			}
 			return items;
 		}
@@ -225,9 +228,6 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			let items_1: Attachment[] = [];
 			return items_1;
 		}
-
-		//return [new Attachment(new EntityReference('annotation', '1'), 'Document', 'png'), new Attachment(new EntityReference('annotation', '2'), 'Document2', 'png')]
-
 	}
 
 	private getAttachment(id: string, type: string): Promise<FileToDownload> {
@@ -256,12 +256,11 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			this._context.navigation.openFile(r);
 		}
 		);
-
 	}
 
 
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
-
+		
 	}
 
 	public getOutputs(): IOutputs {

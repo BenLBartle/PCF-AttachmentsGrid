@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <manifest>
-  <control namespace="Bartl.Pcf" constructor="AttachmentsGrid" version="0.0.3" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" control-type="standard">
+  <control namespace="Bartl.Pcf" constructor="AttachmentsGrid" version="0.0.6" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" control-type="standard">
     <property name="AttachmentsGrid" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true"/>
     <resources>
       <code path="bundle.js" order="1"/>
