@@ -24,6 +24,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	private _context: ComponentFramework.Context<IInputs>;
 	private _container: HTMLDivElement;
+	private _divControl: HTMLDivElement;
 
 	// Define Input Elements
 	public _dropElement: HTMLDivElement;
@@ -102,15 +103,24 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		//create the bootstrap cards
 		if (this._attachments.length > 0) {
 			//create containing card
-			let divControl: HTMLDivElement = document.createElement("div");
-			divControl.className = "card-columns";
-			this._dropElement.appendChild(divControl);
+			this._divControl = document.createElement("div");
+			this._divControl.className = "card-columns";
+			this._dropElement.appendChild(this._divControl);
 
 			this._attachments.forEach(item => {
 				//create item card
 				let divCard: HTMLDivElement = document.createElement("div");
+				divCard.id = `${item.name}_divcard`;
 				divCard.className = "card";
-				divControl.appendChild(divCard);
+				
+				//create delete element
+				let deleteButton: HTMLButtonElement = document.createElement("button");
+				deleteButton.type = "button";
+				deleteButton.className = "close deleteButton";
+				deleteButton.id = `${item.name}_deleteButton`;
+				deleteButton.innerHTML = "<span>&times;</span>";
+				this._divControl.appendChild(divCard);
+				divCard.appendChild(deleteButton);
 
 				//get item image
 				let img: HTMLImageElement = <HTMLImageElement>document.createElement("img");
@@ -128,12 +138,52 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 					item.attachmentId.id.toString(),
 					item.attachmentId.typeName);
 
-				//add a view file listener
-				divCard.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
-
+				//add event listeners 
+				divCardBody.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
+				img.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
+				deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef));
 			})
 	}
 }
+	private onClickDelete(divCard: HTMLDivElement, attachment: AttachmentRef){
+		//show confirm or cancel action
+		let confirmDelete: HTMLDivElement = document.createElement("div");
+		confirmDelete.className = "confirmDelete";
+		divCard.appendChild(confirmDelete);
+		//add html button group
+		confirmDelete.innerHTML = `<div class='btn-group btn-group-sm' role='group'><button id='deleteButton' type='button' class='btn btn-secondary'>Delete</button><button id='cancelButton' type='button' class='btn btn-secondary'>Cancel</button></div>`;
+		
+		//get button elements from html
+		let cancelButton = document.getElementById("cancelButton");
+		cancelButton = <HTMLButtonElement> cancelButton;
+		let deleteButton = document.getElementById("deleteButton");
+		deleteButton = <HTMLButtonElement> deleteButton;
+
+		if (cancelButton) {
+		cancelButton.addEventListener("click", this.onClickCancelDelete.bind(this, confirmDelete));
+		}
+		if (deleteButton) {
+			deleteButton.addEventListener("click", this.onClickConfirmDelete.bind(this, attachment));
+		}
+	
+	}
+
+	private onClickConfirmDelete(attachment: AttachmentRef){
+		//get the attachment id
+		let id = attachment.id;
+		
+		//delete the attachment
+		this._context.webAPI.deleteRecord("annotation", id).then(
+			function success(result) {
+			console.log("Successfully deleted the record")
+			}
+		)
+	}
+
+	private onClickCancelDelete(confirmDelete: HTMLDivElement){
+		//clear the buttons
+		confirmDelete.innerHTML = "";
+	}
 
 	private findImage(img: HTMLImageElement, item: Attachment) {
 		//find the image
