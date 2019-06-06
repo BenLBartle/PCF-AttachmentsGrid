@@ -113,14 +113,14 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 		let divCard: HTMLDivElement = document.createElement("div");
 		divCard.className = "card";
-		divCard.id = `${attachment.name}_divcard`;
+		divCard.id = `${attachment.attachmentId.id}_divcard`;
 		this._attachmentContainer.appendChild(divCard);
 
 		//create delete element
 		let deleteButton: HTMLButtonElement = document.createElement("button");
 		deleteButton.type = "button";
 		deleteButton.className = "close deleteButton";
-		deleteButton.id = `${attachment.name}_deleteButton`;
+		deleteButton.id = `${attachment.attachmentId.id}_deleteButton`;
 		deleteButton.innerHTML = "<span>&times;</span>";
 		//this._divControl.appendChild(divCard);
 		divCard.appendChild(deleteButton);
@@ -144,7 +144,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		//add event listeners 
 		divCardBody.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
 		img.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
-		deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef));
+		deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef, this._attachmentSource));
 	}
 
 	private onClickDelete(divCard: HTMLDivElement, attachment: AttachmentRef){
@@ -170,6 +170,13 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	
 	}
 
+	private removeBSCard(id: string) {
+		let fileElement = document.getElementById(`${id}_divcard`);
+		if (fileElement){
+			fileElement.remove();
+		}
+	}
+
 	private onClickConfirmDelete(attachment: AttachmentRef){
 		//get the attachment id
 		let id = attachment.id;
@@ -178,8 +185,11 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		this._context.webAPI.deleteRecord("annotation", id).then(
 			function success(result) {
 			console.log("Successfully deleted the record")
+			return result;
 			}
-		)
+		).then(result => {
+				this.removeBSCard(result.id);
+		})
 	}
 
 	private onClickCancelDelete(confirmDelete: HTMLDivElement){
@@ -217,7 +227,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			let items: Attachment[] = [];
 			for (let i = 0; i < result.entities.length; i++) {
 				let ent = result.entities[i];
-				let item = new Attachment(new EntityReference("annotation", ent["annotationid"].toString()), ent["filename"].split('.')[0], ent["filename"].split('.')[1].toLowerCase());
+				let item = new Attachment(new EntityReference("annotation", ent["annotationid"].toString()), ent["filename"].split('.')[0], ent["filename"].split('.')[1].toLowerCase(), false);
 
 				this._attachmentSource.next(item);
 			}

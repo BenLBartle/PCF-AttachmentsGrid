@@ -65,7 +65,7 @@ export class DropHandler {
 
             var response = await this.webApi.createRecord('annotation', attachment);
 
-            this.attachmentSource.next(new Attachment(new EntityReference('annotation', response.id), this.TrimFileExtension(file.name), this.GetFileExtension(file.name)));
+            this.attachmentSource.next(new Attachment(new EntityReference('annotation', response.id), this.TrimFileExtension(file.name), this.GetFileExtension(file.name), false));
 
             console.log(`Attachment: ${file.name} processed, percentage complete: ${this.GetProgressPercentage(i + 1, list.length)}`);
 
