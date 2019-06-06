@@ -28,6 +28,9 @@ td.image_style {
 
 .deleteButton {
   float: left !important;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 .card:hover {

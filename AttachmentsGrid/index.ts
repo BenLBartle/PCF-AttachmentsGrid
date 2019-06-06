@@ -122,7 +122,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		deleteButton.className = "close deleteButton";
 		deleteButton.id = `${attachment.name}_deleteButton`;
 		deleteButton.innerHTML = "<span>&times;</span>";
-		this._divControl.appendChild(divCard);
+		//this._divControl.appendChild(divCard);
 		divCard.appendChild(deleteButton);
 
 		//get item image
@@ -133,7 +133,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 		//set item name
 		let divCardBody: HTMLDivElement = document.createElement("div");
-		divCardBody.className = "card-text text-center";
+		divCardBody.className = "card-text text-center text-truncate";
 		divCard.appendChild(divCardBody);
 
 		divCardBody.innerHTML = `${attachment.name}.${attachment.extension}`;

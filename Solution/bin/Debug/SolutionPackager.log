@@ -1292,3 +1292,75 @@ Packing C:\Users\Ben\source\repos\AttachmentsGrid\Solution\obj\Debug\ to bin\Deb
 2019-06-05 11:58:26.387 - Info	
 Unmanaged Pack complete.
 
+2019-06-06 09:41:44.805 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-06 09:41:44.838 - Info	Processing Component: Entities
+2019-06-06 09:41:44.846 - Info	Processing Component: Roles
+2019-06-06 09:41:44.850 - Info	Processing Component: Workflows
+2019-06-06 09:41:44.854 - Info	Processing Component: FieldSecurityProfiles
+2019-06-06 09:41:44.855 - Info	Processing Component: Templates
+2019-06-06 09:41:44.856 - Info	Processing Component: EntityMaps
+2019-06-06 09:41:44.857 - Info	Processing Component: EntityRelationships
+2019-06-06 09:41:44.872 - Info	Processing Component: OrganizationSettings
+2019-06-06 09:41:44.876 - Info	Processing Component: optionsets
+2019-06-06 09:41:44.877 - Info	Processing Component: CustomControls
+2019-06-06 09:41:44.899 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-06 09:41:44.923 - Info	Processing Component: EntityDataProviders
+2019-06-06 09:41:45.063 - Info	
+Unmanaged Pack complete.
+
+2019-06-06 10:30:30.426 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-06 10:30:30.516 - Info	Processing Component: Entities
+2019-06-06 10:30:30.528 - Info	Processing Component: Roles
+2019-06-06 10:30:30.537 - Info	Processing Component: Workflows
+2019-06-06 10:30:30.538 - Info	Processing Component: FieldSecurityProfiles
+2019-06-06 10:30:30.539 - Info	Processing Component: Templates
+2019-06-06 10:30:30.541 - Info	Processing Component: EntityMaps
+2019-06-06 10:30:30.544 - Info	Processing Component: EntityRelationships
+2019-06-06 10:30:30.584 - Info	Processing Component: OrganizationSettings
+2019-06-06 10:30:30.586 - Info	Processing Component: optionsets
+2019-06-06 10:30:30.591 - Info	Processing Component: CustomControls
+2019-06-06 10:30:30.667 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-06 10:30:30.774 - Info	Processing Component: EntityDataProviders
+2019-06-06 10:30:31.198 - Info	
+Unmanaged Pack complete.
+
+2019-06-06 10:39:31.886 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-06 10:39:31.911 - Info	Processing Component: Entities
+2019-06-06 10:39:31.914 - Info	Processing Component: Roles
+2019-06-06 10:39:31.917 - Info	Processing Component: Workflows
+2019-06-06 10:39:31.917 - Info	Processing Component: FieldSecurityProfiles
+2019-06-06 10:39:31.917 - Info	Processing Component: Templates
+2019-06-06 10:39:31.917 - Info	Processing Component: EntityMaps
+2019-06-06 10:39:31.921 - Info	Processing Component: EntityRelationships
+2019-06-06 10:39:31.927 - Info	Processing Component: OrganizationSettings
+2019-06-06 10:39:31.928 - Info	Processing Component: optionsets
+2019-06-06 10:39:31.929 - Info	Processing Component: CustomControls
+2019-06-06 10:39:31.940 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-06 10:39:31.956 - Info	Processing Component: EntityDataProviders
+2019-06-06 10:39:32.074 - Info	
+Unmanaged Pack complete.
+
+2019-06-06 10:56:00.839 - Info	
+Packing c:\PCF_AttachmentsGrid\Solution\obj\Debug\ to bin\Debug\\Solution.zip
+
+2019-06-06 10:56:00.885 - Info	Processing Component: Entities
+2019-06-06 10:56:00.894 - Info	Processing Component: Roles
+2019-06-06 10:56:00.898 - Info	Processing Component: Workflows
+2019-06-06 10:56:00.903 - Info	Processing Component: FieldSecurityProfiles
+2019-06-06 10:56:00.904 - Info	Processing Component: Templates
+2019-06-06 10:56:00.905 - Info	Processing Component: EntityMaps
+2019-06-06 10:56:00.905 - Info	Processing Component: EntityRelationships
+2019-06-06 10:56:00.925 - Info	Processing Component: OrganizationSettings
+2019-06-06 10:56:00.927 - Info	Processing Component: optionsets
+2019-06-06 10:56:00.927 - Info	Processing Component: CustomControls
+2019-06-06 10:56:00.949 - Info	 - Bartl.Pcf.AttachmentsGrid
+2019-06-06 10:56:00.982 - Info	Processing Component: EntityDataProviders
+2019-06-06 10:56:01.149 - Info	
+Unmanaged Pack complete.
+
