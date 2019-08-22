@@ -63,6 +63,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		// Add control initialization code
 		this._context = context;
 		this._container = document.createElement("div");
+		this._container.classList.add("bootstrap-iso-attachments-grid");
 		this._apiClient = context.webAPI;
 
 		// Progress Bar Elements

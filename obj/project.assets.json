@@ -9,33 +9,6 @@
           "build/Microsoft.PowerApps.MSBuild.Pcf.targets": {}
         }
       }
-    },
-    ".NETFramework,Version=v4.0/win": {
-      "Microsoft.PowerApps.MSBuild.Pcf/0.1.51": {
-        "type": "package",
-        "build": {
-          "build/Microsoft.PowerApps.MSBuild.Pcf.props": {},
-          "build/Microsoft.PowerApps.MSBuild.Pcf.targets": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.0/win-x64": {
-      "Microsoft.PowerApps.MSBuild.Pcf/0.1.51": {
-        "type": "package",
-        "build": {
-          "build/Microsoft.PowerApps.MSBuild.Pcf.props": {},
-          "build/Microsoft.PowerApps.MSBuild.Pcf.targets": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.0/win-x86": {
-      "Microsoft.PowerApps.MSBuild.Pcf/0.1.51": {
-        "type": "package",
-        "build": {
-          "build/Microsoft.PowerApps.MSBuild.Pcf.props": {},
-          "build/Microsoft.PowerApps.MSBuild.Pcf.targets": {}
-        }
-      }
     }
   },
   "libraries": {
@@ -61,27 +34,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\uktpjhether\\.nuget\\packages\\": {}
+    "C:\\Users\\rickw\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\PCF_AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj",
+      "projectUniqueName": "C:\\Code\\AttachmentsGridFork\\PCF-AttachmentsGrid.pcfproj",
       "projectName": "PCF-AttachmentsGrid",
-      "projectPath": "c:\\PCF_AttachmentsGrid\\PCF-AttachmentsGrid.pcfproj",
-      "packagesPath": "C:\\Users\\uktpjhether\\.nuget\\packages\\",
-      "outputPath": "c:\\PCF_AttachmentsGrid\\obj\\",
+      "projectPath": "C:\\Code\\AttachmentsGridFork\\PCF-AttachmentsGrid.pcfproj",
+      "packagesPath": "C:\\Users\\rickw\\.nuget\\packages\\",
+      "outputPath": "C:\\Code\\AttachmentsGridFork\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
-        "C:\\Users\\uktpjhether\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\rickw\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net40"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -98,17 +69,6 @@
             "version": "[0.1.*, )"
           }
         }
-      }
-    },
-    "runtimes": {
-      "win": {
-        "#import": []
-      },
-      "win-x64": {
-        "#import": []
-      },
-      "win-x86": {
-        "#import": []
       }
     }
   }
