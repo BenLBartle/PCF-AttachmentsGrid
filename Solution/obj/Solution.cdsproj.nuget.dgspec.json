@@ -1,28 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "c:\\PCF_AttachmentsGrid\\Solution\\Solution.cdsproj": {}
+    "C:\\Code\\AttachmentsGridFork\\Solution\\Solution.cdsproj": {}
   },
   "projects": {
-    "c:\\PCF_AttachmentsGrid\\Solution\\Solution.cdsproj": {
+    "C:\\Code\\AttachmentsGridFork\\Solution\\Solution.cdsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\PCF_AttachmentsGrid\\Solution\\Solution.cdsproj",
+        "projectUniqueName": "C:\\Code\\AttachmentsGridFork\\Solution\\Solution.cdsproj",
         "projectName": "Solution",
-        "projectPath": "c:\\PCF_AttachmentsGrid\\Solution\\Solution.cdsproj",
-        "packagesPath": "C:\\Users\\uktpjhether\\.nuget\\packages\\",
-        "outputPath": "c:\\PCF_AttachmentsGrid\\Solution\\obj\\",
+        "projectPath": "C:\\Code\\AttachmentsGridFork\\Solution\\Solution.cdsproj",
+        "packagesPath": "C:\\Users\\rickw\\.nuget\\packages\\",
+        "outputPath": "C:\\Code\\AttachmentsGridFork\\Solution\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [
-          "C:\\Users\\uktpjhether\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\rickw\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net462"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,17 +37,6 @@
               "version": "[0.1.*, )"
             }
           }
-        }
-      },
-      "runtimes": {
-        "win": {
-          "#import": []
-        },
-        "win-x64": {
-          "#import": []
-        },
-        "win-x86": {
-          "#import": []
         }
       }
     }
