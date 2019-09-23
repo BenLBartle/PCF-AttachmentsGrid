@@ -4,6 +4,11 @@ import { DropHandler } from "./drophandler/drophandler";
 import { Attachment } from "./Attachment";
 import { EntityReference } from "./EntityReference";
 import { Subject } from "rxjs";
+import { XrmAttachmentControl, IXrmAttachmentControlProps } from "./AttachmentsGrid";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { initializeIcons } from '@uifabric/icons';
+initializeIcons();
 
 class AttachmentRef {
 	id: string;
@@ -22,6 +27,13 @@ class FileToDownload implements ComponentFramework.FileObject {
 }
 
 export class AttachmentsGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+
+	// Reference to the notifyOutputChanged method
+	private notifyOutputChanged: () => void;
+	// Reference to the container div
+	private theContainer: HTMLDivElement;
+
+	private props: IXrmAttachmentControlProps;
 
 	private _context: ComponentFramework.Context<IInputs>;
 	private _container: HTMLDivElement;
@@ -60,53 +72,56 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	 */
 	public async init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 
-		// Add control initialization code
-		this._context = context;
-		this._container = document.createElement("div");
-		this._apiClient = context.webAPI;
+		// // Add control initialization code
+		// this._context = context;
+		// this._container = document.createElement("div");
+		// this._apiClient = context.webAPI;
 
-		// Progress Bar Elements
-		this._progressElement = document.createElement("div");
-		this._progressElement.classList.add("progress");
-		this._progressElement.style.height = "5px";
-		this._progressElement.style.visibility = "hidden";
+		// // Progress Bar Elements
+		// this._progressElement = document.createElement("div");
+		// this._progressElement.classList.add("progress");
+		// this._progressElement.style.height = "5px";
+		// this._progressElement.style.visibility = "hidden";
 
-		this._progressBar = document.createElement("div");
-		this._progressBar.classList.add("progress-bar");
-		this._progressBar.style.width = "0%";
+		// this._progressBar = document.createElement("div");
+		// this._progressBar.classList.add("progress-bar");
+		// this._progressBar.style.width = "0%";
 
-		// Layout Elements
-		this._dropElement = document.createElement("div");
-		this._dropElement.classList.add("drop-zone");
+		// // Layout Elements
+		// this._dropElement = document.createElement("div");
+		// this._dropElement.classList.add("drop-zone");
 
-		// Attachment Elements
-		this._attachmentContainer = document.createElement("div");
-		this._attachmentContainer.className = "card-columns";
-		this._dropElement.appendChild(this._attachmentContainer);
+		// // Attachment Elements
+		// this._attachmentContainer = document.createElement("div");
+		// this._attachmentContainer.className = "card-columns";
+		// this._dropElement.appendChild(this._attachmentContainer);
 
-		this._progressElement.append(this._progressBar);
+		// this._progressElement.append(this._progressBar);
 
-		this._container.append(this._progressElement, this._dropElement);
+		// this._container.append(this._progressElement, this._dropElement);
 
-		// Bind to parent container
-		container.append(this._container);
+		// // Bind to parent container
+		// container.append(this._container);
 
-		//get attachements from notes
-		let reference: EntityReference = new EntityReference(
-			(<any>context).page.entityTypeName,
-			(<any>context).page.entityId
-		)
+		// //get attachements from notes
+		// let reference: EntityReference = new EntityReference(
+		// 	(<any>context).page.entityTypeName,
+		// 	(<any>context).page.entityId
+		// )
 
-		this.attachmentAdded$.subscribe(a => {
-			this.createBSCard(a);
-		})
+		// this.attachmentAdded$.subscribe(a => {
+		// 	this.createBSCard(a);
+		// })
 
-		if ((<any>context).page.entityId != null) {
-			await this.getAttachments(reference)
-		}
+		// if ((<any>context).page.entityId != null) {
+		// 	await this.getAttachments(reference)
+		// }
 
-		this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachmentSource);
-		this._dropHandler.HandleDrop(this._dropElement, (<any>context).page.entityId, (<any>context).page.entityTypeName);
+		// this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachmentSource);
+		// this._dropHandler.HandleDrop(this._dropElement, (<any>context).page.entityId, (<any>context).page.entityTypeName);
+	
+		this.notifyOutputChanged = notifyOutputChanged;
+		this.theContainer = container;
 	}
 
 	private createBSCard(attachment: Attachment) {
@@ -271,6 +286,68 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
 		
+		const attachments = [{
+			id: "1",
+			name: "Document",
+			icon: "WordIcon",
+			filename: "Document",
+			fileextension: ".docx",
+			size: 12
+		},
+		{
+			id: "1",
+			name: "Document",
+			icon: "WordIcon",
+			filename: "Document",
+			fileextension: ".docx",
+			size: 12
+		},
+		{
+			id: "1",
+			name: "Document",
+			icon: "WordIcon",
+			filename: "Document",
+			fileextension: ".docx",
+			size: 12
+		},
+		{
+			id: "1",
+			name: "Document",
+			icon: "WordIcon",
+			filename: "Document",
+			fileextension: ".docx",
+			size: 12
+		},
+		{
+			id: "1",
+			name: "Document",
+			icon: "WordIcon",
+			filename: "Document",
+			fileextension: ".docx",
+			size: 12
+		},
+		{
+			id: "1",
+			name: "Document",
+			icon: "WordIcon",
+			filename: "Document",
+			fileextension: ".docx",
+			size: 12
+		}];
+
+		this.props = {
+			defaultAttachments: attachments
+		}
+
+		// Render the React component into the div container
+		ReactDOM.render(
+			// Create the React component
+			React.createElement(
+				XrmAttachmentControl,
+				this.props
+			),
+			this.theContainer
+		);
 	}
 
 	public getOutputs(): IOutputs {
