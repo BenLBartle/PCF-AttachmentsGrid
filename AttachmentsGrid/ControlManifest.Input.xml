@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Bartl.Pcf" constructor="AttachmentsGrid" version="0.0.8" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" control-type="standard">
-    <property name="AttachmentsGrid" display-name-key="AttachmentsGrid_Display_Key" description-key="AttachmentsGrid_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
+  <control namespace="Bartl.Pcf" constructor="AttachmentsGrid" version="0.0.992" display-name-key="Attachments Grid" description-key="Allows upload of attachments using drag and drop." control-type="standard">
+    <property name="AttachmentsGrid" display-name-key="Attachments Grid Text Field" description-key="Choose the text field this attachments grid will be assigned to." of-type="SingleLine.Text" usage="bound" required="true" />
+    <property name="RefreshAttachmentNameAfterUpload" display-name-key="Refresh Attachment Name After Upload" description-key="If set to yes the file name will be refreshed after the file is uploaded which can be useful if a plugin/workflow updates the name of the file on upload." of-type="SingleLine.Text" default-value="true" usage="input" required="true" />
     <resources>
       <code path="index.ts" order="1"/>
       <css path="css/AttachmentsGrid.css" order="1" />

@@ -17,6 +17,9 @@
     "rxjs": "^6.5.2"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/free-regular-svg-icons": "^5.11.2",
+    "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "pcf-scripts": "~0",
     "pcf-start": "~0"
   }

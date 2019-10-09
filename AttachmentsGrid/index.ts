@@ -4,6 +4,9 @@ import { DropHandler } from "./drophandler/drophandler";
 import { Attachment } from "./Attachment";
 import { EntityReference } from "./EntityReference";
 import { Subject } from "rxjs";
+import { library, dom } from '@fortawesome/fontawesome-svg-core'
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 class AttachmentRef {
 	id: string;
@@ -21,27 +24,38 @@ class FileToDownload implements ComponentFramework.FileObject {
 	mimeType: string;
 }
 
+class OpenFileOptions implements ComponentFramework.NavigationApi.OpenFileOptions {
+	openMode: ComponentFramework.NavigationApi.Types.OpenFileMode;
+}
+
 export class AttachmentsGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private _context: ComponentFramework.Context<IInputs>;
-	private _container: HTMLDivElement;
-	private _divControl: HTMLDivElement;
-
-	// Define Input Elements
-	public _dropElement: HTMLDivElement;
-
-	public _progressElement: HTMLDivElement;
-	public _progressBar: HTMLDivElement;
-
-	private _dropHandler: DropHandler;
-
 	private _apiClient: ComponentFramework.WebApi;
 
-	private _attachmentSource = new Subject<Attachment>();
+	// Define Input Elements
+	private _refreshFileNameAfterUpload: boolean;
 
+	// Define Standard container element
+	private _container: HTMLDivElement;
+
+	// Define Display Elements
+	public _dropElement: HTMLDivElement;
+	public _progressElement: HTMLDivElement;
+	public _progressBar: HTMLDivElement;
+	public _attachmentsNotAvialbleElement: HTMLDivElement;
 	private _attachmentContainer: HTMLDivElement;
+	
+	// Define Drop Handler
+	private _dropHandler: DropHandler;
 
+	// Define attachment grid data
+	private _attachmentSource = new Subject<Attachment>();
 	attachmentAdded$ = this._attachmentSource.asObservable();
+
+	// Define entity data
+	private _reference: EntityReference;
+	private _initialized: boolean;
 
 	/**
 	 * Empty constructor.
@@ -65,6 +79,31 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		this._container = document.createElement("div");
 		this._container.classList.add("bootstrap-iso-attachments-grid");
 		this._apiClient = context.webAPI;
+		this._refreshFileNameAfterUpload = (context.parameters.RefreshAttachmentNameAfterUpload && context.parameters.RefreshAttachmentNameAfterUpload.raw && context.parameters.RefreshAttachmentNameAfterUpload.raw.toLowerCase() === 'true') ? true : false;
+
+		// Add fontawesome icons
+		library.add(faDownload, faTrashAlt);
+
+		// Add dom watcher for fontawesome.
+		// In order to use this update node_modules\@fortawesome\fontawesome-svg-core\index.d.ts file.
+		// A pull request will be put in with the fontawesome team to fix this.
+		// 
+		//Update the watch line in the following code
+		//export interface DOM {
+		//   i2svg(params?: { node: Node; callback: () => void }): Promise<void>;
+		//   css(): string;
+		//   insertCss(): string;
+		//   watch(): void;
+		//}
+		//
+		//to =>
+		//
+		//	watch(params?: { autoReplaceSvgRoot: Node; observeMutationsRoot: Node}): void;
+		//
+		dom.watch({
+			autoReplaceSvgRoot: container,
+			observeMutationsRoot: container
+		})
 
 		// Progress Bar Elements
 		this._progressElement = document.createElement("div");
@@ -85,29 +124,20 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		this._attachmentContainer.className = "card-columns";
 		this._dropElement.appendChild(this._attachmentContainer);
 
+		this._attachmentsNotAvialbleElement =  document.createElement("div");
+		this._attachmentsNotAvialbleElement.innerText = "This record hasn't been created yet.  To add or view attachments, save it first.";
+		this._attachmentsNotAvialbleElement.classList.add("attachmentsNotAvailable", "hidden");
 		this._progressElement.append(this._progressBar);
-
-		this._container.append(this._progressElement, this._dropElement);
+		this._container.append(this._attachmentsNotAvialbleElement, this._progressElement, this._dropElement);
 
 		// Bind to parent container
-		container.append(this._container);
-
-		//get attachements from notes
-		let reference: EntityReference = new EntityReference(
-			(<any>context).page.entityTypeName,
-			(<any>context).page.entityId
-		)
+		container.append(this._container);		
 
 		this.attachmentAdded$.subscribe(a => {
 			this.createBSCard(a);
 		})
 
-		if ((<any>context).page.entityId != null) {
-			await this.getAttachments(reference)
-		}
-
-		this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachmentSource);
-		this._dropHandler.HandleDrop(this._dropElement, (<any>context).page.entityId, (<any>context).page.entityTypeName);
+		//await this.initAttachmentsAndDropHandler(this._context);
 	}
 
 	private createBSCard(attachment: Attachment) {
@@ -117,13 +147,21 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		divCard.id = `${attachment.attachmentId.id}_divcard`;
 		this._attachmentContainer.appendChild(divCard);
 
+		//create download element
+		let downloadButton: HTMLButtonElement = document.createElement("button");
+		downloadButton.type = "button";
+		downloadButton.className = "close downloadButton";
+		downloadButton.id = `${attachment.attachmentId.id}_downloadButton`;
+		downloadButton.innerHTML = "<span><i title='Download File' class='fas fa-download'></i></span>";
+		divCard.appendChild(downloadButton);
+
 		//create delete element
 		let deleteButton: HTMLButtonElement = document.createElement("button");
 		deleteButton.type = "button";
 		deleteButton.className = "close deleteButton";
 		deleteButton.id = `${attachment.attachmentId.id}_deleteButton`;
-		deleteButton.innerHTML = "<span>&times;</span>";
-		//this._divControl.appendChild(divCard);
+		//deleteButton.innerHTML = "<span><i class='fas fa-trash-alt'></i></span>";
+		deleteButton.innerHTML = "<span><i title='Delete File' class='far fa-trash-alt'></i></span>";
 		divCard.appendChild(deleteButton);
 
 		//get item image
@@ -143,57 +181,58 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			attachment.attachmentId.typeName);
 
 		//add event listeners 
-		divCardBody.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
-		img.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
+		divCardBody.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef, undefined));
+		img.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef, undefined));
 		deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef, this._attachmentSource));
+		downloadButton.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef, { openMode: 2 }));
 	}
 
-	private onClickDelete(divCard: HTMLDivElement, attachment: AttachmentRef){
+	private onClickDelete(divCard: HTMLDivElement, attachment: AttachmentRef) {
 		//show confirm or cancel action
 		let confirmDelete: HTMLDivElement = document.createElement("div");
 		confirmDelete.className = "confirmDelete";
 		divCard.appendChild(confirmDelete);
 		//add html button group
-		confirmDelete.innerHTML = `<div class='btn-group btn-group-sm' role='group'><button id='deleteButton' type='button' class='btn btn-secondary'>Delete</button><button id='cancelButton' type='button' class='btn btn-secondary'>Cancel</button></div>`;
-		
+		confirmDelete.innerHTML = `<div class='btn-group btn-group-sm' role='group'><button alt='Delete' id='deleteButton' type='button' class='btn btn-secondary'>Delete</button><button alt='Cancel' id='cancelButton' type='button' class='btn btn-secondary'>Cancel</button></div>`;
+
 		//get button elements from html
 		let cancelButton = document.getElementById("cancelButton");
-		cancelButton = <HTMLButtonElement> cancelButton;
+		cancelButton = <HTMLButtonElement>cancelButton;
 		let deleteButton = document.getElementById("deleteButton");
-		deleteButton = <HTMLButtonElement> deleteButton;
+		deleteButton = <HTMLButtonElement>deleteButton;
 
 		if (cancelButton) {
-		cancelButton.addEventListener("click", this.onClickCancelDelete.bind(this, confirmDelete));
+			cancelButton.addEventListener("click", this.onClickCancelDelete.bind(this, confirmDelete));
 		}
 		if (deleteButton) {
 			deleteButton.addEventListener("click", this.onClickConfirmDelete.bind(this, attachment));
 		}
-	
+
 	}
 
 	private removeBSCard(id: string) {
 		let fileElement = document.getElementById(`${id}_divcard`);
-		if (fileElement){
+		if (fileElement) {
 			fileElement.remove();
 		}
 	}
 
-	private onClickConfirmDelete(attachment: AttachmentRef){
+	private onClickConfirmDelete(attachment: AttachmentRef) {
 		//get the attachment id
 		let id = attachment.id;
-		
+
 		//delete the attachment
 		this._context.webAPI.deleteRecord("annotation", id).then(
 			function success(result) {
-			console.log("Successfully deleted the record")
-			return result;
+				console.log("Successfully deleted the record")
+				return result;
 			}
 		).then(result => {
-				this.removeBSCard(result.id);
+			this.removeBSCard(result.id);
 		})
 	}
 
-	private onClickCancelDelete(confirmDelete: HTMLDivElement){
+	private onClickCancelDelete(confirmDelete: HTMLDivElement) {
 		//clear the buttons
 		confirmDelete.innerHTML = "";
 	}
@@ -258,20 +297,38 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		);
 	}
 
-	private onClickAttachment(attachment: AttachmentRef): void {
+	private onClickAttachment(attachment: AttachmentRef, fileOptions?: OpenFileOptions): void {
 		//get the attachment id
 		let id = attachment.id;
 		let type = attachment.type;
 
 		this.getAttachment(id, type).then((r: any) => {
-			this._context.navigation.openFile(r);
+			this._context.navigation.openFile(r, fileOptions);
 		}
 		);
 	}
 
+	private async initAttachmentsAndDropHandler(context: ComponentFramework.Context<IInputs>) {
+		if ((<any>context).page.entityId != null) {
+			this._attachmentsNotAvialbleElement.classList.add("hidden");
+			this._reference = new EntityReference(
+				(<any>context).page.entityTypeName,
+				(<any>context).page.entityId			
+			)
+			await this.getAttachments(this._reference)
+			this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachmentSource, this._refreshFileNameAfterUpload);
+			this._dropHandler.HandleDrop(this._dropElement, (<any>context).page.entityId, (<any>context).page.entityTypeName);
+		}
+		else{
+			this._attachmentsNotAvialbleElement.classList.remove("hidden");
+		}	
+	}
 
-	public updateView(context: ComponentFramework.Context<IInputs>): void {
-		
+	public async updateView(context: ComponentFramework.Context<IInputs>) {
+		if (!this._dropHandler)
+		{				
+			await this.initAttachmentsAndDropHandler(context);
+		}
 	}
 
 	public getOutputs(): IOutputs {

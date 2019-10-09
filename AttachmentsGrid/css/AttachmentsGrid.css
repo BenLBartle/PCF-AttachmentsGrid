@@ -17,7 +17,7 @@ td.image_style {
 
 .confirmDelete {
   position: absolute;
-  top: 22px;
+  top: 23px;
   left: 0px;
   z-index: 1000;
 }
@@ -29,8 +29,17 @@ td.image_style {
 .deleteButton {
   float: left !important;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 2px;
+  left: 22px;
+  font-size: 1.0rem !important;
+}
+
+.downloadButton {
+  float: left !important;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 1.0rem !important;
 }
 
 .card:hover {
@@ -68,6 +77,16 @@ td.image_style {
 .drop-zone-hover {
   border: 2px dashed #333;
   opacity: 0.5;
+}
+
+.attachmentsNotAvailable {
+  color: #666666;
+  font-size: 14px;
+  font-family: 'SegoeUI', 'Segoe UI';
+}
+
+.hidden {
+  display: none;  
 }
 
 @media (min-width: 576px) {

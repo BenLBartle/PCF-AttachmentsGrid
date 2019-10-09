@@ -4,7 +4,7 @@ import { EntityReference } from '../EntityReference';
 
 export class DropHandler {
 
-    constructor(private webApi: ComponentFramework.WebApi, private progressElement: HTMLDivElement, private progressBar: HTMLDivElement, private attachmentSource: Subject<Attachment>) {
+    constructor(private webApi: ComponentFramework.WebApi, private progressElement: HTMLDivElement, private progressBar: HTMLDivElement, private attachmentSource: Subject<Attachment>, private refreshFileNameAfterUpload: boolean) {
 
     }
 
@@ -46,10 +46,16 @@ export class DropHandler {
     }
 
     private async handleFiles(list: FileList, entityId: string, entityLogicalName: string) {
+        var errors = "";
 
         for (var i = 0; i < list.length; i++) {
 
             var file = list[i];
+
+            if (!file.size) {
+                errors += `File ${file.name} could not be uploaded because it has no content.\n\n`;
+                continue;
+            }
 
             var encodedData = await this.EncodeFile(file);
 
@@ -65,12 +71,23 @@ export class DropHandler {
 
             var response = await this.webApi.createRecord('annotation', attachment);
 
-            this.attachmentSource.next(new Attachment(new EntityReference('annotation', response.id), this.TrimFileExtension(file.name), this.GetFileExtension(file.name), false));
+            var fileName = file.name;
+            if (this.refreshFileNameAfterUpload) {
+                var uploadedFile = await this.webApi.retrieveRecord('annotation', response.id, "?$select=filename");
+                fileName = uploadedFile.filename;
+                console.log(`Attachment: Original file name ${file.name} retrieved as ${fileName} from annotation.`);
+            }
 
-            console.log(`Attachment: ${file.name} processed, percentage complete: ${this.GetProgressPercentage(i + 1, list.length)}`);
+            this.attachmentSource.next(new Attachment(new EntityReference('annotation', response.id), this.TrimFileExtension(fileName), this.GetFileExtension(fileName), false));
+
+            console.log(`Attachment: ${fileName} processed, percentage complete: ${this.GetProgressPercentage(i + 1, list.length)}`);
 
             this.progressBar.style.width = this.GetProgressPercentage(i + 1, list.length);
-
+        }
+        
+        if (errors.length) {
+            await this.sleep(750);
+            alert(errors);
         }
     }
 
