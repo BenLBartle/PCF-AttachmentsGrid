@@ -8,3 +8,6 @@
 
 # output directory
 /out
+
+**/bin
+**/obj
