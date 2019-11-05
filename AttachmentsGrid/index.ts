@@ -6,7 +6,7 @@ import { EntityReference } from "./EntityReference";
 import { Subject } from "rxjs";
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
-import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+import { faTrashAlt, faFilePdf, faFileAlt, faFileArchive, faFileExcel, faFileImage, faFilePowerpoint, faFileWord, faFileCode } from '@fortawesome/free-regular-svg-icons'
 
 class AttachmentRef {
 	id: string;
@@ -82,7 +82,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		this._refreshFileNameAfterUpload = (context.parameters.RefreshAttachmentNameAfterUpload && context.parameters.RefreshAttachmentNameAfterUpload.raw && context.parameters.RefreshAttachmentNameAfterUpload.raw.toLowerCase() === 'true') ? true : false;
 
 		// Add fontawesome icons
-		library.add(faDownload, faTrashAlt);
+		library.add(faDownload, faTrashAlt, faFilePdf, faFileAlt, faFileArchive, faFileExcel, faFileImage, faFilePowerpoint, faFileWord, faFileCode);
 
 		// Add dom watcher for fontawesome.
 		// In order to use this update node_modules\@fortawesome\fontawesome-svg-core\index.d.ts file.
@@ -147,13 +147,49 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		divCard.id = `${attachment.attachmentId.id}_divcard`;
 		this._attachmentContainer.appendChild(divCard);
 
+		//set item name
+		let divCardBody: HTMLDivElement = document.createElement("div");
+		divCardBody.className = "card-text text-left text-truncate";
+		divCard.appendChild(divCardBody);
+		divCardBody.title = `${attachment.name}.${attachment.extension}`;
+		divCardBody.innerHTML = `${attachment.name}.${attachment.extension}`;
+
+		let fileIcon = this.getFileIcon(attachment);
+		let divFileIcon: HTMLDivElement = document.createElement("div");
+		divFileIcon.classList.add("card-img-top", "fileIconDiv");
+		divFileIcon.innerHTML = `<span class="fileIcon"><i title="${attachment.name}.${attachment.extension}" class='${fileIcon}'></i></span>`;
+		divCard.appendChild(divFileIcon);
+
+		// let divFileDetails: HTMLDivElement = document.createElement("div");
+		// divFileDetails.classList.add("float", "fileDetailsDiv");
+		// divFileDetails.innerHTML = `<span class="fileIcon"><i title="${attachment.name}.${attachment.extension}" class='${fileIcon}'></i></span>`;
+		// divCard.appendChild(divFileDetails); 
+		
+		
+		//get item image
+		// let img: HTMLImageElement = <HTMLImageElement>document.createElement("img");
+		// img.className = "card-img-top";
+		// divCard.appendChild(img);
+		// this.findImage(img, attachment);
+
+		let divButtons: HTMLDivElement = document.createElement("div");
+		divButtons.id = `${attachment.attachmentId.id}_divbuttons`;
+		divButtons.className = "divButtons";
+		divCard.appendChild(divButtons);
 		//create download element
 		let downloadButton: HTMLButtonElement = document.createElement("button");
 		downloadButton.type = "button";
 		downloadButton.className = "close downloadButton";
 		downloadButton.id = `${attachment.attachmentId.id}_downloadButton`;
-		downloadButton.innerHTML = "<span><i title='Download File' class='fas fa-download'></i></span>";
-		divCard.appendChild(downloadButton);
+		downloadButton.innerHTML = `<span><i title='Download ${attachment.name}.${attachment.extension}' class='fas fa-download'></i></span>`;
+		downloadButton.title = `Download ${attachment.name}.${attachment.extension}`;
+		divButtons.appendChild(downloadButton);
+
+		let divFileSize: HTMLSpanElement = document.createElement("div");
+		divFileSize.className = "fileSize";
+		divFileSize.title = "File Size";
+		divFileSize.innerHTML = `${this.readableBytes(attachment.size)}`;
+		divButtons.appendChild(divFileSize);
 
 		//create delete element
 		let deleteButton: HTMLButtonElement = document.createElement("button");
@@ -161,28 +197,18 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		deleteButton.className = "close deleteButton";
 		deleteButton.id = `${attachment.attachmentId.id}_deleteButton`;
 		//deleteButton.innerHTML = "<span><i class='fas fa-trash-alt'></i></span>";
-		deleteButton.innerHTML = "<span><i title='Delete File' class='far fa-trash-alt'></i></span>";
-		divCard.appendChild(deleteButton);
+		deleteButton.innerHTML = `<span><i title='Delete ${attachment.name}.${attachment.extension}' class='far fa-trash-alt'></i></span>`;
+		deleteButton.title = `Delete ${attachment.name}.${attachment.extension}`;
+		divButtons.appendChild(deleteButton);
 
-		//get item image
-		let img: HTMLImageElement = <HTMLImageElement>document.createElement("img");
-		img.className = "card-img-top";
-		divCard.appendChild(img);
-		this.findImage(img, attachment);
-
-		//set item name
-		let divCardBody: HTMLDivElement = document.createElement("div");
-		divCardBody.className = "card-text text-center text-truncate";
-		divCard.appendChild(divCardBody);
-
-		divCardBody.innerHTML = `${attachment.name}.${attachment.extension}`;
+		
 		let attachmentRef = new AttachmentRef(
 			attachment.attachmentId.id.toString(),
 			attachment.attachmentId.typeName);
 
 		//add event listeners 
 		divCardBody.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef, undefined));
-		img.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef, undefined));
+		divFileIcon.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef, undefined));
 		deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef, this._attachmentSource));
 		downloadButton.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef, { openMode: 2 }));
 	}
@@ -210,6 +236,13 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	}
 
+	private readableBytes(bytes: number): string {
+		let i: number = Math.floor(Math.log(bytes) / Math.log(1024)),
+		sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+	
+		return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
+	}
+
 	private removeBSCard(id: string) {
 		let fileElement = document.getElementById(`${id}_divcard`);
 		if (fileElement) {
@@ -235,6 +268,36 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	private onClickCancelDelete(confirmDelete: HTMLDivElement) {
 		//clear the buttons
 		confirmDelete.innerHTML = "";
+	}
+
+	private getFileIcon(item: Attachment): string{
+		let result = "far fa-file-alt";
+		switch(item.extension.toLocaleLowerCase()){
+			case "pdf":
+				result = "far fa-file-pdf";
+				break;
+			case "doc":
+			case "docx":
+				result = "far fa-file-word";
+				break;
+			case "ppt":
+			case "pptx":
+				result = "far fa-file-powerpoint";
+				break;
+			case "xls":
+			case "xlsx":
+				result = "far fa-file-excel";
+				break;
+			case "css":
+			case "html":
+				result = "far fa-file-code";
+				break;
+			default:
+				result = "far fa-file-alt"
+				break;
+		}
+
+		return result;
 	}
 
 	private findImage(img: HTMLImageElement, item: Attachment) {
@@ -267,7 +330,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			let items: Attachment[] = [];
 			for (let i = 0; i < result.entities.length; i++) {
 				let ent = result.entities[i];
-				let item = new Attachment(new EntityReference("annotation", ent["annotationid"].toString()), ent["filename"].split('.')[0], ent["filename"].split('.')[1].toLowerCase(), false);
+				let item = new Attachment(new EntityReference("annotation", ent.annotationid.toString()), ent.filename.split('.')[0], ent.filename.split('.')[1].toLowerCase(), false, ent.filesize);
 
 				this._attachmentSource.next(item);
 			}
@@ -285,13 +348,11 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		return this._context.webAPI.retrieveRecord("annotation", id).then(
 			function success(result) {
 				let file: FileToDownload = new FileToDownload();
-				file.fileContent =
-					type == "annotation" ? result["documentbody"] : result["body"];
-				file.fileName = result["filename"];
-				file.fileSize = result["filesize"];
-				file.mimeType = result["mimetype"];
+				file.fileContent = type == "annotation" ? result.documentbody : result.body;
+				file.fileName = result.filename;
+				file.fileSize = result.filesize;
+				file.mimeType = result.mimetype;
 				return file;
-
 			}
 
 		);
