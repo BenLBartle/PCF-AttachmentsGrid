@@ -11,9 +11,38 @@ td.image_style {
 }
 
 .card {
-    border: 1px solid #ffffff !important;
-    padding: 5%;
+  border: 1px solid #ccc !important;
+  border-radius: 0% !important;
+  padding: 5%;
 }
+
+.float {
+  float: left;
+} 
+
+.fileSize {
+  text-align: right;
+}
+
+.fileIconDiv { 
+  width: 15%;
+}
+
+.fileDetailsDiv { 
+  width: 85%;
+}
+
+.card:hover {
+  border: 1px solid #acabab !important;
+  background-color: #f3f2f1 !important;
+  /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
+  }
+
+.divButtons {
+  height: 20px;
+  margin-top: 10px;
+}
+
 
 .confirmDelete {
   position: absolute;
@@ -29,22 +58,22 @@ td.image_style {
 .deleteButton {
   float: left !important;
   position: absolute;
-  top: 2px;
-  left: 22px;
-  font-size: 1.0rem !important;
+  left: 40px;
+  bottom:  10px;
+  font-size: 1.2rem !important;
 }
 
 .downloadButton {
   float: left !important;
   position: absolute;
-  top: 2px;
-  left: 2px;
-  font-size: 1.0rem !important;
+  left: 10px;
+  bottom:  10px;
+  font-size: 1.2rem !important;
 }
 
-.card:hover {
-  border: 1px solid #acabab !important;
-  }
+.fileIcon {
+  font-size: 2.5rem !important;
+}
 
 .drop-zone {
     border: 1px solid #ddd;
@@ -64,7 +93,7 @@ td.image_style {
     font-variant-east-asian: normal;
     font-variant-ligatures: normal;
     font-variant-numeric: normal;
-    font-weight: 600;
+    /* font-weight: 600; */
     
     margin-left: 0;
     margin-right: 0;

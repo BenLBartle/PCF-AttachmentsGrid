@@ -78,7 +78,7 @@ export class DropHandler {
                 console.log(`Attachment: Original file name ${file.name} retrieved as ${fileName} from annotation.`);
             }
 
-            this.attachmentSource.next(new Attachment(new EntityReference('annotation', response.id), this.TrimFileExtension(fileName), this.GetFileExtension(fileName), false));
+            this.attachmentSource.next(new Attachment(new EntityReference('annotation', response.id), this.TrimFileExtension(fileName), this.GetFileExtension(fileName), false, file.size));
 
             console.log(`Attachment: ${fileName} processed, percentage complete: ${this.GetProgressPercentage(i + 1, list.length)}`);
 
