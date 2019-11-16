@@ -36,20 +36,9 @@
           "dependencies": {
             "Microsoft.PowerApps.MSBuild.Pcf": {
               "target": "Package",
-              "version": "[0.1.*, )"
+              "version": "[1.*, )"
             }
           }
-        }
-      },
-      "runtimes": {
-        "win": {
-          "#import": []
-        },
-        "win-x64": {
-          "#import": []
-        },
-        "win-x86": {
-          "#import": []
         }
       }
     }
