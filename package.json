@@ -11,16 +11,19 @@
   "dependencies": {
     "@types/node": "^10.12.18",
     "@types/powerapps-component-framework": "1.1.0",
+    "@types/react-timeago": "^4.1.1",
     "@uifabric/icons": "^7.0.2",
     "@uifabric/react-cards": "^0.108.0",
     "bootstrap": "^4.3.1",
+    "filesize": "^6.0.1",
     "jquery": "^3.4.1",
     "office-ui-fabric-react": "^7.28.1",
     "popper.js": "^1.15.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-timeago": "^4.4.0",
-    "rxjs": "^6.5.2"
+    "rxjs": "^6.5.2",
+    "timeago.js": "^4.0.2"
   },
   "devDependencies": {
     "@types/react": "^16.9.2",

@@ -119,7 +119,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 		// this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachmentSource);
 		// this._dropHandler.HandleDrop(this._dropElement, (<any>context).page.entityId, (<any>context).page.entityTypeName);
-	
+
 		this.notifyOutputChanged = notifyOutputChanged;
 		this.theContainer = container;
 	}
@@ -162,52 +162,52 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 		deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef, this._attachmentSource));
 	}
 
-	private onClickDelete(divCard: HTMLDivElement, attachment: AttachmentRef){
+	private onClickDelete(divCard: HTMLDivElement, attachment: AttachmentRef) {
 		//show confirm or cancel action
 		let confirmDelete: HTMLDivElement = document.createElement("div");
 		confirmDelete.className = "confirmDelete";
 		divCard.appendChild(confirmDelete);
 		//add html button group
 		confirmDelete.innerHTML = `<div class='btn-group btn-group-sm' role='group'><button id='deleteButton' type='button' class='btn btn-secondary'>Delete</button><button id='cancelButton' type='button' class='btn btn-secondary'>Cancel</button></div>`;
-		
+
 		//get button elements from html
 		let cancelButton = document.getElementById("cancelButton");
-		cancelButton = <HTMLButtonElement> cancelButton;
+		cancelButton = <HTMLButtonElement>cancelButton;
 		let deleteButton = document.getElementById("deleteButton");
-		deleteButton = <HTMLButtonElement> deleteButton;
+		deleteButton = <HTMLButtonElement>deleteButton;
 
 		if (cancelButton) {
-		cancelButton.addEventListener("click", this.onClickCancelDelete.bind(this, confirmDelete));
+			cancelButton.addEventListener("click", this.onClickCancelDelete.bind(this, confirmDelete));
 		}
 		if (deleteButton) {
 			deleteButton.addEventListener("click", this.onClickConfirmDelete.bind(this, attachment));
 		}
-	
+
 	}
 
 	private removeBSCard(id: string) {
 		let fileElement = document.getElementById(`${id}_divcard`);
-		if (fileElement){
+		if (fileElement) {
 			fileElement.remove();
 		}
 	}
 
-	private onClickConfirmDelete(attachment: AttachmentRef){
+	private onClickConfirmDelete(attachment: AttachmentRef) {
 		//get the attachment id
 		let id = attachment.id;
-		
+
 		//delete the attachment
 		this._context.webAPI.deleteRecord("annotation", id).then(
 			function success(result) {
-			console.log("Successfully deleted the record")
-			return result;
+				console.log("Successfully deleted the record")
+				return result;
 			}
 		).then(result => {
-				this.removeBSCard(result.id);
+			this.removeBSCard(result.id);
 		})
 	}
 
-	private onClickCancelDelete(confirmDelete: HTMLDivElement){
+	private onClickCancelDelete(confirmDelete: HTMLDivElement) {
 		//clear the buttons
 		confirmDelete.innerHTML = "";
 	}
@@ -285,54 +285,66 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
-		
+
 		const attachments = [{
 			id: "1",
-			name: "Document",
-			icon: "WordIcon",
-			filename: "Document",
+			name: "How you doin'?",
+			icon: "WordDocument",
+			filename: "Pickup Lines",
 			fileextension: ".docx",
-			size: 12
+			size: 272828182,
+			createdBy: "Joey Tribiani",
+			createdOn: new Date(1974,10)
 		},
 		{
 			id: "1",
-			name: "Document",
-			icon: "WordIcon",
-			filename: "Document",
-			fileextension: ".docx",
-			size: 12
+			name: "Secret Map",
+			icon: "PDF",
+			filename: "Sonics Layer",
+			fileextension: "pdf",
+			size: 28930302,
+			createdBy: "Dr Robotnik",
+			createdOn: new Date(2020,1)
 		},
 		{
 			id: "1",
-			name: "Document",
-			icon: "WordIcon",
-			filename: "Document",
-			fileextension: ".docx",
-			size: 12
+			name: "Evil Plan",
+			icon: "PowerPointDocument",
+			filename: "World Domination",
+			fileextension: "ppt",
+			size: 4000,
+			createdBy: "Ben Bartle",
+			createdOn: new Date(2019,8)
 		},
 		{
 			id: "1",
-			name: "Document",
-			icon: "WordIcon",
-			filename: "Document",
-			fileextension: ".docx",
-			size: 12
+			name: "No one will know it's me",
+			icon: "PDF",
+			filename: "Disguise",
+			fileextension: "pdf",
+			size: 293933,
+			createdBy: "Sparticus",
+			createdOn: new Date(2009,12)
 		},
 		{
 			id: "1",
-			name: "Document",
-			icon: "WordIcon",
-			filename: "Document",
-			fileextension: ".docx",
-			size: 12
+			name: "Damnit again",
+			icon: "PDF",
+			filename: "Speeding Ticket",
+			fileextension: "pdf",
+			size: 1220330,
+			createdBy: "Chuck Jaeger",
+			createdOn: new Date()
 		},
 		{
 			id: "1",
-			name: "Document",
-			icon: "WordIcon",
-			filename: "Document",
-			fileextension: ".docx",
-			size: 12
+			name: "Muhaa haa haa",
+			icon: "ExcelDocument",
+			filename: "Enemies List",
+			fileextension: "xlsx",
+			size: 12,
+			createdBy: "Pol Pot",
+			createdOn: new Date(2020,1)
 		}];
 
 		this.props = {
