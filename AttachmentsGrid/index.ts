@@ -4,10 +4,11 @@ import { DropHandler } from "./drophandler/drophandler";
 import { Attachment } from "./Attachment";
 import { EntityReference } from "./EntityReference";
 import { Subject } from "rxjs";
-import { XrmAttachmentControl, IXrmAttachmentControlProps } from "./AttachmentsGrid";
+import { IXrmAttachmentControlProps } from "./IXrmAttachmentControlProps";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { initializeIcons } from '@uifabric/icons';
+import { XrmAttachmentControl } from "./AttachmentsGrid";
 initializeIcons();
 
 class AttachmentRef {
@@ -34,6 +35,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	private theContainer: HTMLDivElement;
 
 	private props: IXrmAttachmentControlProps;
+	private _reference: EntityReference;
 
 	private _context: ComponentFramework.Context<IInputs>;
 	private _container: HTMLDivElement;
@@ -72,95 +74,16 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 	 */
 	public async init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 
-		// // Add control initialization code
-		// this._context = context;
-		// this._container = document.createElement("div");
-		// this._apiClient = context.webAPI;
-
-		// // Progress Bar Elements
-		// this._progressElement = document.createElement("div");
-		// this._progressElement.classList.add("progress");
-		// this._progressElement.style.height = "5px";
-		// this._progressElement.style.visibility = "hidden";
-
-		// this._progressBar = document.createElement("div");
-		// this._progressBar.classList.add("progress-bar");
-		// this._progressBar.style.width = "0%";
-
-		// // Layout Elements
-		// this._dropElement = document.createElement("div");
-		// this._dropElement.classList.add("drop-zone");
-
-		// // Attachment Elements
-		// this._attachmentContainer = document.createElement("div");
-		// this._attachmentContainer.className = "card-columns";
-		// this._dropElement.appendChild(this._attachmentContainer);
-
-		// this._progressElement.append(this._progressBar);
-
-		// this._container.append(this._progressElement, this._dropElement);
-
-		// // Bind to parent container
-		// container.append(this._container);
-
-		// //get attachements from notes
-		// let reference: EntityReference = new EntityReference(
-		// 	(<any>context).page.entityTypeName,
-		// 	(<any>context).page.entityId
-		// )
-
-		// this.attachmentAdded$.subscribe(a => {
-		// 	this.createBSCard(a);
-		// })
-
-		// if ((<any>context).page.entityId != null) {
-		// 	await this.getAttachments(reference)
-		// }
-
-		// this._dropHandler = new DropHandler(this._apiClient, this._progressElement, this._progressBar, this._attachmentSource);
-		// this._dropHandler.HandleDrop(this._dropElement, (<any>context).page.entityId, (<any>context).page.entityTypeName);
-
-		this.notifyOutputChanged = notifyOutputChanged;
 		this.theContainer = container;
+
+		this._reference = new EntityReference(
+			(<any>context).page.entityTypeName,
+			(<any>context).page.entityId
+		)
+
+		this._reference = new EntityReference("contact", "2");
 	}
 
-	private createBSCard(attachment: Attachment) {
-
-		let divCard: HTMLDivElement = document.createElement("div");
-		divCard.className = "card";
-		divCard.id = `${attachment.attachmentId.id}_divcard`;
-		this._attachmentContainer.appendChild(divCard);
-
-		//create delete element
-		let deleteButton: HTMLButtonElement = document.createElement("button");
-		deleteButton.type = "button";
-		deleteButton.className = "close deleteButton";
-		deleteButton.id = `${attachment.attachmentId.id}_deleteButton`;
-		deleteButton.innerHTML = "<span>&times;</span>";
-		//this._divControl.appendChild(divCard);
-		divCard.appendChild(deleteButton);
-
-		//get item image
-		let img: HTMLImageElement = <HTMLImageElement>document.createElement("img");
-		img.className = "card-img-top";
-		divCard.appendChild(img);
-		this.findImage(img, attachment);
-
-		//set item name
-		let divCardBody: HTMLDivElement = document.createElement("div");
-		divCardBody.className = "card-text text-center text-truncate";
-		divCard.appendChild(divCardBody);
-
-		divCardBody.innerHTML = `${attachment.name}.${attachment.extension}`;
-		let attachmentRef = new AttachmentRef(
-			attachment.attachmentId.id.toString(),
-			attachment.attachmentId.typeName);
-
-		//add event listeners 
-		divCardBody.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
-		img.addEventListener("click", this.onClickAttachment.bind(this, attachmentRef));
-		deleteButton.addEventListener("click", this.onClickDelete.bind(this, divCard, attachmentRef, this._attachmentSource));
-	}
 
 	private onClickDelete(divCard: HTMLDivElement, attachment: AttachmentRef) {
 		//show confirm or cancel action
@@ -185,13 +108,6 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 
 	}
 
-	private removeBSCard(id: string) {
-		let fileElement = document.getElementById(`${id}_divcard`);
-		if (fileElement) {
-			fileElement.remove();
-		}
-	}
-
 	private onClickConfirmDelete(attachment: AttachmentRef) {
 		//get the attachment id
 		let id = attachment.id;
@@ -203,7 +119,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 				return result;
 			}
 		).then(result => {
-			this.removeBSCard(result.id);
+			console.log(result.id)
 		})
 	}
 
@@ -294,7 +210,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			fileextension: ".docx",
 			size: 272828182,
 			createdBy: "Joey Tribiani",
-			createdOn: new Date(1974,10)
+			createdOn: new Date(1974, 10)
 		},
 		{
 			id: "1",
@@ -304,7 +220,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			fileextension: "pdf",
 			size: 28930302,
 			createdBy: "Dr Robotnik",
-			createdOn: new Date(2020,1)
+			createdOn: new Date(2020, 1)
 		},
 		{
 			id: "1",
@@ -314,7 +230,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			fileextension: "ppt",
 			size: 4000,
 			createdBy: "Ben Bartle",
-			createdOn: new Date(2019,8)
+			createdOn: new Date(2019, 8)
 		},
 		{
 			id: "1",
@@ -324,7 +240,7 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			fileextension: "pdf",
 			size: 293933,
 			createdBy: "Sparticus",
-			createdOn: new Date(2009,12)
+			createdOn: new Date(2009, 12)
 		},
 		{
 			id: "1",
@@ -344,11 +260,13 @@ export class AttachmentsGrid implements ComponentFramework.StandardControl<IInpu
 			fileextension: "xlsx",
 			size: 12,
 			createdBy: "Pol Pot",
-			createdOn: new Date(2020,1)
+			createdOn: new Date(2020, 1)
 		}];
 
 		this.props = {
-			defaultAttachments: attachments
+			defaultAttachments: attachments,
+			webApi: context.webAPI,
+			entityReference: this._reference
 		}
 
 		// Render the React component into the div container
